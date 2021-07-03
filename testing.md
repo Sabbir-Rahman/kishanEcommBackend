@@ -10,9 +10,9 @@ For Functional we will use 4 phase of testing
 # 4/ Sanity testing
 
 For automation test primary plan to use 
-    jest -> Unit testing & integration of rest api
+    mocha -> Unit testing & integration of rest api
     supertest -> As rest api testing framework
-    jest--coverage(lcov)-> For see testing civerage
+    mocha--coverage(istanbul)-> For see testing civerage
     postman -> For sanity testing
 
 CI CD will also be available with azure
