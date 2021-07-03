@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll",
+    "test": "mocha ./test/* --exit",
     "start": "nodemon app.js"
+    
   },
   "keywords": [],
   "author": "",
@@ -13,7 +14,10 @@
   "dependencies": {
     "express": "^4.17.1",
     "jest": "^27.0.6",
-    "nodemon": "^2.0.9",
+    "nodemon": "^2.0.9"
+  },
+  "devDependencies": {
+    "mocha": "^9.0.2",
     "supertest": "^6.1.3"
   }
 }
