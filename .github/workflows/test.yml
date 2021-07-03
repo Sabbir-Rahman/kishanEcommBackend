@@ -26,5 +26,6 @@ jobs:
       run: |
         # Build and test the project, then
         # deploy to Azure Web App.
-        npm run test --if-present
+        npm install
+      
     
