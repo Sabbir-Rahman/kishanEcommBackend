@@ -4,7 +4,8 @@ const request = require('supertest')
 const app = require('../app')
 var expect = chai.expect;
 
-describe('Auth api', () => {
+describe('Auth api', function () {
+    this.timeout(25000)
 
     it('POST /auth/register --> create a user', () => { 
         return request(app)
