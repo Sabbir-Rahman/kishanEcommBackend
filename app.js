@@ -25,7 +25,7 @@ app.use('/auth',authRoutes)
 
 
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => app.listen(port, () => console.log(`Mongodb connected and Server running on port: ${PORT}`)))
+    .then(() => app.listen(PORT, () => console.log(`Mongodb connected and Server running on port: ${PORT}`)))
     .catch((error) => console.log(error.message));
 
 mongoose.set('useNewUrlParser', true);
