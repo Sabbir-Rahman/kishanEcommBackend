@@ -5,7 +5,7 @@ const router = express.Router()
 
 const isLoggedIn = require('../middleware/authMiddleware')
 
-const { test,databaseTest } = require('../controllers/authControllers')
+const { test,databaseTest, postRegister } = require('../controllers/authControllers')
 
 
 
@@ -13,5 +13,6 @@ const { test,databaseTest } = require('../controllers/authControllers')
 
 router.get('/',test)
 router.post('/',databaseTest)
+router.post('/register',postRegister)
 
 module.exports = router
