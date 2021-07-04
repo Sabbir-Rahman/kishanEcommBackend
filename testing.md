@@ -14,6 +14,7 @@ For automation test primary plan to use
     supertest -> As rest api testing framework
     mocha--coverage(istanbul)-> For see testing civerage
     postman -> For sanity testing
+    chai -> For assertion framework
 
 CI CD will also be available with azure
 
