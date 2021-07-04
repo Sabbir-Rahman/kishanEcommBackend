@@ -7,7 +7,7 @@ dotenv.config()
 
 
 const PORT = process.env.PORT || 5000
-const CONNECTION_URL = 'mongodb+srv://ecomm:ecomm@cluster0.rfrs8.mongodb.net/kishanEcommDatbase?retryWrites=true&w=majority'
+const CONNECTION_URL = process.env.CONNECTION_URL
 app.listen(PORT,()=> {
   console.log(`Server running on ${PORT}`)
 })
