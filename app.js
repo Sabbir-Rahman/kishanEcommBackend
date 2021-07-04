@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 dotenv.config()
 
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 5000
 const CONNECTION_URL = process.env.CONNECTION_URL
 
 
