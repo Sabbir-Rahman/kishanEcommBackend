@@ -11,7 +11,7 @@ const CONNECTION_URL = process.env.CONNECTION_URL
 
 //hello 
 app.get('/',(req,res)=> {
-    res.send('Hello from kishan backend')
+    res.send(`Hello from kishan backend ${PORT}`)
 })
 
 
