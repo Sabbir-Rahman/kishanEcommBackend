@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-
+const authRoutes = require('./routers/authRoutes')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 
@@ -13,6 +13,8 @@ const CONNECTION_URL = process.env.CONNECTION_URL
 app.get('/',(req,res)=> {
     res.send(`Hello from kishan backend`)
 })
+
+app.use('/auth',authRoutes)
 
 
 
