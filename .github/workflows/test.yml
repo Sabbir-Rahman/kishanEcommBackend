@@ -10,7 +10,8 @@ env:
   AZURE_WEBAPP_NAME: kishanEcommBackend   # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '14.x'
-  CI: true               
+  CI: true 
+  CONNECTION_URL: ${{ secrets.CONNECTION_URL }}                 
 
 jobs:
   build-and-test:
