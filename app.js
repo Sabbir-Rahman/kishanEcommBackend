@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 dotenv.config()
 
 
-const PORT = process.env.PORT
+const port = process.env.port || 5000
 const CONNECTION_URL = process.env.CONNECTION_URL
 
 
@@ -25,7 +25,7 @@ app.use('/auth',authRoutes)
 
 
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => app.listen(PORT, () => console.log(`Mongodb connected and Server running on port: ${PORT}`)))
+    .then(() => app.listen(port, () => console.log(`Mongodb connected and Server running on port: ${port}`)))
     .catch((error) => console.log(error.message));
 
 mongoose.set('useNewUrlParser', true);
