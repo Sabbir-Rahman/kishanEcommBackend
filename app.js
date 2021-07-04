@@ -8,7 +8,9 @@ dotenv.config()
 
 const PORT = process.env.PORT || 5000
 const CONNECTION_URL = process.env.CONNECTION_URL
-
+app.listen(PORT,()=> {
+  console.log(`Server running on ${PORT}`)
+})
 
 app.use(express.json());
 app.use(express.urlencoded({
@@ -24,12 +26,21 @@ app.use('/auth',authRoutes)
 
 
 
-mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => app.listen(PORT, () => console.log(`Mongodb connected and Server running on port: ${PORT}`)))
-    .catch((error) => console.log(error.message));
+const connectDB = async () => {
+  try {
+      await mongoose.connect(CONNECTION_URL, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+          useFindAndModify: false,
+          useCreateIndex: true
+      });
 
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
+      console.log('MongoDB connected!!');
+  } catch (err) {
+      console.log('Failed to connect to MongoDB', err);
+  }
+};
+
+connectDB();
 
 module.exports = app
