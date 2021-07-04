@@ -27,7 +27,7 @@ const databaseTest = async (req,res)=>{
 
 }
 
-const postRegister = async (req,res) => {
+const userRegister = async (req,res) => {
     //fullname,email,pass,confpass
     const {fullname,email,password,confpassword} = req.body
 
@@ -59,4 +59,26 @@ const postRegister = async (req,res) => {
     
 }
 
-module.exports = {test, databaseTest, postRegister}
+const userLogin = async (req,res) => {
+    const { email, password } = req.body
+
+    try {
+        const existingUser = await User.findOne({ email });
+
+        if(!existingUser) return res.status(404).json({ message: "User doesn't exist"})
+
+        const isPasswordCorrect = await bcrypt.compare(password, existingUser.password)
+
+        if(!isPasswordCorrect){
+            return res.status(400).json({ message: "Invalid credentials"})
+        }
+
+        const token = jwt.sign({ email: existingUser.email, id: existingUser._id}, 'test', { expiresIn: "1h"})
+        res.status(200).json({result: existingUser, token})
+    
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong"})
+    }
+}
+
+module.exports = {test, databaseTest, userRegister, userLogin}
