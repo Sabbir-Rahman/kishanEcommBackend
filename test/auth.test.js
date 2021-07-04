@@ -3,7 +3,7 @@ const chai = require('chai')
 const request = require('supertest')
 const app = require('../app')
 var expect = chai.expect;
-//
+
 describe('Auth api', () => {
 
     it('POST /auth/register --> create a user', () => { 
