@@ -2,6 +2,8 @@
 
 Microsoft azure (https://kishanecommbackend.azurewebsites.net/)
 
+Datbase of this is deployed on mongodb atlas
+
 # node-js-sample
 
 A barebones Node.js app using [Express 4](http://expressjs.com/).
