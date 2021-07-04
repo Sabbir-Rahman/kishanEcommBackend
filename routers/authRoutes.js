@@ -1,12 +1,17 @@
 const express = require('express')
 const router = express.Router()
 
+
+
 const isLoggedIn = require('../middleware/authMiddleware')
 
-const { test } = require('../controllers/authControllers')
-const { route } = require('../app')
+const { test,databaseTest } = require('../controllers/authControllers')
+
+
+
 
 
 router.get('/',test)
+router.post('/',databaseTest)
 
 module.exports = router
