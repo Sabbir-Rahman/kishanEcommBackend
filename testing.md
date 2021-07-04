@@ -15,7 +15,8 @@ For automation test primary plan to use
     mocha--coverage(istanbul)-> For see testing civerage
     postman -> For sanity testing
     chai -> For assertion framework
-
+    
+The big challenger here is that doing test of async function
 CI CD will also be available with azure
 
 We will try to follow tdd( test driven development)
