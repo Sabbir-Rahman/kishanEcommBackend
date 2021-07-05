@@ -81,6 +81,7 @@ const roleUpdateRoleTable = async (req,res) => {
         
         const existingUserRole = await userRole.findOne({email})
         const existingUser = await User.findOne({email})
+        
         if(existingUserRole){
             await userRoleSchema.updateOne(
                 {
@@ -90,6 +91,8 @@ const roleUpdateRoleTable = async (req,res) => {
                     user_role:role,
                 }
             )
+        }
+        if(existingUserRole){
             await userSchema.updateOne(
                 {
                     email: existingUser.email,
@@ -98,16 +101,15 @@ const roleUpdateRoleTable = async (req,res) => {
                     user_role:role,
                 }
             )
-        return res.json({'message':`User role updated from ${existingUserRole.user_role} to ${role}`})
-        }else{
-            return res.status(400).json({ message: "User role not exist"})
         }
+        return res.json({'message':`User role updated from ${existingUserRole.user_role} to ${role}`})
+        
         
         
         
     } catch (error) {
       
-        res.status(500).json({ message: 'Something went wrong'})
+        res.status(500).json({ message: 'Something went wrong please ensure user exist'})
     }
 
     
