@@ -54,7 +54,8 @@ const productSchema = mongoose.Schema({
     district: requiredString,
     upazilla: isString,
     isVerified: requiredBoolean,
-    isAvailableNow: requiredBoolean
+    isAvailableNow: requiredBoolean,
+    timestamp:isString
 
     
 })
