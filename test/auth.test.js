@@ -5,7 +5,7 @@ const app = require('../app')
 var expect = chai.expect;
 
 describe('Auth api', function () {
-    this.timeout(10000)
+    this.timeout(20000)
 
     it('POST /auth/register --> create a user', () => { 
         return request(app)
