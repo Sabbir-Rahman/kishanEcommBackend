@@ -5,8 +5,10 @@ const roleRoutes = require('./routers/roleRoutes')
 const productRoutes = require('./routers/productRoutes')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
-dotenv.config()
+var cors = require('cors')
+dotenv.config();
 
+app.use(cors()) 
 
 const PORT = process.env.PORT || 5000
 const CONNECTION_URL = process.env.CONNECTION_URL
