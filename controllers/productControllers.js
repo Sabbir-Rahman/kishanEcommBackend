@@ -1,6 +1,9 @@
 const product = require('../model/productModel')
 const productSchema = require('../model/productModel')
 
+const notification = require('../model/notificationModel')
+const notificationSchema = require('../model/notificationModel')
+
 const dotenv = require('dotenv')
 dotenv.config()
 const test = ((req,res) => {
@@ -31,6 +34,7 @@ const addProducts = async (req,res) => {
         "isVerified": false,
         "isAvailableNow": false
     }
+    
 
     if(req.user.email=='testadmin@kishan.com')
     {
@@ -38,7 +42,17 @@ const addProducts = async (req,res) => {
     }
     
     const result =  await new productSchema(newProduct).save()
-    res.json({'message':'Add Product Succesfull','data':result}).status(201)
+
+    const notificationMessage = `Seller id:${req.user.id} added product id:${result._id} for verification`
+
+    const newNotification = {
+        "user_role": "admin",
+        "message": notificationMessage,
+        "type": "product_verification"
+    }
+    const notificationResult = await new notificationSchema(newNotification).save()
+
+    res.json({'message':'Add Product Succesfull','data':result,'notification':notificationResult}).status(201)
 }
 
 const editProducts = async (req,res) => {
