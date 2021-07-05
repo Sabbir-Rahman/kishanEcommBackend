@@ -17,12 +17,12 @@ const requiredUniqueString = {
     unique: true
 }
 
-const userSchema = mongoose.Schema({
-    fullname: requiredString,
-    email: requiredUniqueString,
-    password: requiredString,
-    user_role: String
+const notificationSchema = mongoose.Schema({
+    user_id: isString,
+    user_role: isString,
+    message: requiredUniqueString,
+    type: isString
     
 })
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('notification',notificationSchema)
