@@ -64,7 +64,7 @@ describe('Product api', function () {
         .set("Authorization", "Bearer " + token)
         .expect(200)
         .then((res)=>{
-            expect(res.body.message).to.equal('View Product Succesfull')
+            expect(res.body.message).to.equal('View Product by admin Succesfull')
         })
         
     })
