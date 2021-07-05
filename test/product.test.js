@@ -26,6 +26,21 @@ describe('Product api', function () {
         return request(app)
         .post('/product/add')
         .set("Authorization", "Bearer " + token)
+        .send(
+            {
+                "name":"product1",
+                "description": "This is a product",
+                "unitname": "kg",
+                "unitPrize": "12.50",
+                "available": "100",
+                "minOrder": "30",
+                "availableDate":"2021-11-23",
+                "division": "Dhaka",
+                "district": "Gazipur",
+                "upazilla": "Gazipur Sadar",
+                "isAvailableNow": false
+            }
+        )
         .expect(200)
         .then((res)=>{
             expect(res.body.message).to.equal('Add Product Succesfull')

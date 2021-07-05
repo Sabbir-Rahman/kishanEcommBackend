@@ -11,14 +11,6 @@ const requiredDate = {
     required: true
 }
 
-const requiredDecimal = {
-    type: Decimal128,
-    required: true
-}
-
-const isDecimal = {
-    type: Decimal128
-}
 const isString = {
     type: String
     
@@ -51,18 +43,18 @@ const requiredBoolean = {
 const productSchema = mongoose.Schema({
     seller_id: requiredString,
     name: requiredString,
-    description: requiredUniqueString,
+    description: requiredString,
     unitName: requiredString,
-    unitPrize: requiredDecimal,
+    unitPrize: requiredNumber,
     available: requiredNumber,
     minOrder: isNumber,
-    rating: isDecimal,
-    avaialableDate: requiredDate,
+    rating: isNumber,
+    availableDate: requiredDate,
     division: requiredString,
     district: requiredString,
     upazilla: isString,
     isVerified: requiredBoolean,
-    isAvaiable: requiredBoolean
+    isAvailableNow: requiredBoolean
 
     
 })
