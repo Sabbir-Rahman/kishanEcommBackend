@@ -53,7 +53,7 @@ const userRegister = async (req,res) => {
         const result =  await new userSchema(newUser).save()
         
         const tokenUser = {email: result.email, id: result._id}
-        const token = jwt.sign(tokenUser, process.env.ACCESS_TOKEN_SECRET)
+        const token = jwt.sign(tokenUser, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10h'})
           
         res.status(201).json({ result, token})
         
@@ -80,7 +80,7 @@ const userLogin = async (req,res) => {
             return res.status(400).json({ message: "Invalid credentials"})
         }
         const tokenUser = {email: existingUser.email, id: existingUser._id}
-        const token = jwt.sign(tokenUser, process.env.ACCESS_TOKEN_SECRET)
+        const token = jwt.sign(tokenUser, process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '10h'})
         res.status(200).json({result: existingUser, token})
     
     } catch (error) {

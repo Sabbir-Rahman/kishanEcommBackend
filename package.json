@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon app.js",
     "test": "mocha --timeout 40000 ./test/* --exit",
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "start": "node app.js"
+    
   },
   "keywords": [],
   "author": "",
