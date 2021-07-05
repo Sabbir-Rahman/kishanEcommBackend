@@ -29,7 +29,9 @@ describe('Auth api', function () {
             password: '123456'
         })
         .expect('Content-Type', /json/)
-    
+        .then((res)=>{
+            console.log(res.body)
+        })
         
     })
 
