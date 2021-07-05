@@ -7,7 +7,7 @@ const userSchema = require('../model/userModel')
 const dotenv = require('dotenv')
 dotenv.config()
 const test = ((req,res) => {
-    res.send('Hello this is from auth')
+    res.send('Hello this is from role')
 })
 
 const viewAllRole = async(req,res) => {
