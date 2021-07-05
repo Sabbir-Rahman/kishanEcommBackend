@@ -7,7 +7,9 @@ env:
   AZURE_WEBAPP_NAME: kishanEcommBackend   # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '14.x'
-  CONNECTION_URL: ${{ secrets.CONNECTION_URL }}                   # set this to the node version to use
+  CONNECTION_URL: ${{ secrets.CONNECTION_URL }}
+  ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+  REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}                   # set this to the node version to use
 
 jobs:
   build-and-deploy:
