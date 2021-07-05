@@ -100,6 +100,17 @@ describe('Product api', function () {
         
     })
 
+    it('POST /product/edit --> edit product', () => { 
+        return request(app)
+        .put('/product/update?id=60e3584ea06c012b97571248')
+        .set("Authorization", "Bearer " + token)
+        .expect(200)
+        .then((res)=>{
+            expect(res.body.message).to.equal("Edit Product Succesfull")
+        })
+        
+    })
+
     
 
     // it('POST /auth/login --> User not exist', () => { 
