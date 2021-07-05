@@ -6,10 +6,6 @@ const requiredString = {
     required: true
 }
 
-const isString = {
-    type: String,
-    
-}
 
 const requiredUniqueString = {
     type: String,
@@ -17,12 +13,10 @@ const requiredUniqueString = {
     unique: true
 }
 
-const userSchema = mongoose.Schema({
-    fullname: requiredString,
+const userRoleSchema = mongoose.Schema({
     email: requiredUniqueString,
-    password: requiredString,
-    user_role: String
+    user_role: requiredString
     
 })
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('userRole', userRoleSchema)

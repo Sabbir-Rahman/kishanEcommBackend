@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 const authRoutes = require('./routers/authRoutes')
+const roleRoutes = require('./routers/roleRoutes')
+const productRoutes = require('./routers/productRoutes')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 dotenv.config()
@@ -17,12 +19,15 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-//hello 
+
 app.get('/',(req,res)=> {
     res.send(`Hello from kishan backend`)
 })
 
+
 app.use('/auth',authRoutes)
+app.use('/role',roleRoutes)
+app.use('/product',productRoutes)
 
 
 

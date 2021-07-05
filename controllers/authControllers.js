@@ -1,4 +1,5 @@
 const User =  require('../model/userModel')
+const userRole = require('../model/userRole')
 const jwt = require('jsonwebtoken')
 const userSchema = require('../model/userModel')
 const bcrypt = require('bcrypt')
@@ -39,8 +40,14 @@ const userRegister = async (req,res) => {
 
     try {
         
+        var userRoleType = 'customer'
         const existingUser = await User.findOne({email})
+        const existingRole = await userRole.findOne({email})
         
+        if(existingRole){
+             userRoleType = existingRole.user_role
+        }
+
         if(existingUser) return res.status(400).json({ message: "User already exist"})
 
         if(password !== confpassword){
@@ -48,14 +55,14 @@ const userRegister = async (req,res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 12)
-        const newUser = {fullname:fullname, email:email,password:hashedPassword}
+        const newUser = {fullname:fullname, email:email,password:hashedPassword,user_role:userRoleType}
 
         const result =  await new userSchema(newUser).save()
         
-        const tokenUser = {email: result.email, id: result._id}
+        const tokenUser = {id: result._id,fullname:result.fullname,email: result.email,user_role:result.user_role}
         const token = jwt.sign(tokenUser, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10h'})
           
-        res.status(201).json({ result, token})
+        res.status(201).json({ tokenUser, token})
         
         
     } catch (error) {
@@ -79,11 +86,12 @@ const userLogin = async (req,res) => {
         if(!isPasswordCorrect){
             return res.status(400).json({ message: "Invalid credentials"})
         }
-        const tokenUser = {email: existingUser.email, id: existingUser._id}
+        const tokenUser = {id: existingUser._id,fullname:existingUser.fullname,email: existingUser.email,user_role:existingUser.user_role}
         const token = jwt.sign(tokenUser, process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '10h'})
         res.status(200).json({result: existingUser, token})
     
     } catch (error) {
+       
         res.status(500).json({ message: "Something went wrong"})
     }
 }
