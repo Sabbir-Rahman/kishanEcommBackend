@@ -48,13 +48,15 @@ const addProducts = async (req, res) => {
     const newNotificationAdmin = {
         "user_role": "admin",
         "message": notificationMessage,
-        "type": "product_verification"
+        "type": "product_verification",
+        "timestamp": new Date()
     }
 
     const newNotificationManager = {
         "user_role": "manager",
         "message": notificationMessage,
-        "type": "product_verification"
+        "type": "product_verification",
+        "timestamp": new Date()
     }
     const notificationResultAdmin = await new notificationSchema(newNotificationAdmin).save()
     const notificationResultManager = await new notificationSchema(newNotificationManager).save()
@@ -86,11 +88,15 @@ const productVerify = async (req, res) => {
         "user_id": product.seller_id,
         "user_role": "customer",
         "message": notificationMessage,
-        "type": "product_verification"
+        "type": "product_verification",
+        "timestamp": new Date()
     }
+
+    
     if (req.user.email == 'testadmin@kishan.com') {
         res.json({ 'message': 'Verify Product Succesfull','data':'This test admin not hit main db'})
     }
+  
     const notificationResultSeller = await new notificationSchema(newNotificationSeller).save()
 
     res.json({ 'message': 'Verify Product Succesfull','data':product,'notificationSeller': notificationResultSeller})

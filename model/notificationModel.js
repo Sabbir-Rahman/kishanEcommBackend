@@ -21,7 +21,8 @@ const notificationSchema = mongoose.Schema({
     user_id: isString,
     user_role: isString,
     message: requiredUniqueString,
-    type: isString
+    type: isString,
+    timestamp: isString,
     
 })
 
