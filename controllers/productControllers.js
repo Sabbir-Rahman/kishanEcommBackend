@@ -37,9 +37,9 @@ const addProducts = async (req, res) => {
         "timestamp": new Date()
     }
 
-
+    //bypass data for testing not added to real db
     if (req.user.email == 'testadmin@kishan.com') {
-        res.json({ 'message': 'Add Product Succesfull', 'data': 'You are testing datbase product not added' }).status(201)
+        return res.json({ 'message': 'Add Product Succesfull', 'data': 'You are testing datbase product not added' }).status(201)
     }
 
     const result = await new productSchema(newProduct).save()
@@ -93,9 +93,9 @@ const productVerify = async (req, res) => {
         "timestamp": new Date()
     }
 
-    
+    //bypass data for testing not added to real db
     if (req.user.email == 'testadmin@kishan.com') {
-        res.json({ 'message': 'Verify Product Succesfull','data':'This test admin not hit main db'})
+        return res.json({ 'message': 'Verify Product Succesfull','data':'This test admin not hit main db'})
     }
   
     const notificationResultSeller = await new notificationSchema(newNotificationSeller).save()
@@ -104,9 +104,10 @@ const productVerify = async (req, res) => {
 }
 
 const productViewAdmin = async (req, res) => {
+    const sortByTimestampDesc = {'_id': -1}
     const products = await product.find({
         "isVerified": false
-    })
+    }).sort(sortByTimestampDesc)
 
     res.json({ 'message': 'View Product by admin Succesfull', 'data': products })
 
