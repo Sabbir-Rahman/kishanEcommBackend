@@ -91,11 +91,22 @@ describe('Product api', function () {
 
     it('POST /product/edit --> edit product', () => { 
         return request(app)
-        .put('/product/update')
+        .put('/product/update?id=60e35a0f31092c2eb211b592')
+        .set("Authorization", "Bearer " + token)
+        .expect(400)
+        .then((res)=>{
+            expect(res.body.message).to.equal("Product doesn't exist")
+        })
+        
+    })
+
+    it('POST /product/edit --> edit product', () => { 
+        return request(app)
+        .put('/product/update?id=60e3584ea06c012b97571248')
         .set("Authorization", "Bearer " + token)
         .expect(200)
         .then((res)=>{
-            expect(res.body.message).to.equal('Edit Product Succesfull')
+            expect(res.body.message).to.equal("Edit Product Succesfull")
         })
         
     })

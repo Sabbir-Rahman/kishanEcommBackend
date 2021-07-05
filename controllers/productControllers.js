@@ -1,5 +1,6 @@
 const product = require('../model/productModel')
 const productSchema = require('../model/productModel')
+var mongoose = require('mongoose');
 
 const notification = require('../model/notificationModel')
 const notificationSchema = require('../model/notificationModel')
@@ -15,6 +16,8 @@ const viewAllProducts = async (req, res) => {
 
     res.json({ 'message': 'View Product Succesfull'})
 }
+
+
 
 const addProducts = async (req, res) => {
 
@@ -65,9 +68,44 @@ const addProducts = async (req, res) => {
     res.json({ 'message': 'Add Product Succesfull', 'data': result, 'notificationAdmin': notificationResultAdmin, 'notificationManager': notificationResultManager }).status(201)
 }
 
+
+
 const editProducts = async (req, res) => {
-    res.json({ 'message': 'Edit Product Succesfull' })
+    const { id } = req.query
+    const product = req.body
+    product.isVerified = false
+    product.timestamp = new Date()
+
+   //check if product exist
+    const existingProduct = await productSchema.findById(mongoose.Types.ObjectId(id))
+
+    if(!existingProduct) return res.status(400).json({ message: "Product doesn't exist"})
+
+    const updatedProduct = await productSchema.findByIdAndUpdate(id, { ...product,id}, { new: true})
+
+    const notificationMessage = `Seller id:${updatedProduct.seller_id} updated product id:${updatedProduct._id} please check for verify`
+
+    const newNotificationAdmin = {
+        "user_role": "admin",
+        "message": notificationMessage,
+        "type": "product_verification",
+        "timestamp": new Date()
+    }
+
+    const newNotificationManager = {
+        "user_role": "manager",
+        "message": notificationMessage,
+        "type": "product_verification",
+        "timestamp": new Date()
+    }
+    const notificationResultAdmin = await new notificationSchema(newNotificationAdmin).save()
+    const notificationResultManager = await new notificationSchema(newNotificationManager).save()
+
+
+    res.json({ 'message': 'Edit Product Succesfull' ,'date':updatedProduct,'notificationAdmin': notificationResultAdmin, 'notificationManager': notificationResultManager})
 }
+
+
 
 const productVerify = async (req, res) => {
 
