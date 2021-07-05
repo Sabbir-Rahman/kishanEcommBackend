@@ -20,7 +20,7 @@ describe('Auth api', function () {
         
     })
 
-
+    before(()=> this.timeout(10000))
     
     it('POST /auth/login --> login of a user', () => { 
         return request(app)
