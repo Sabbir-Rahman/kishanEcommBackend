@@ -1,4 +1,5 @@
 const User =  require('../model/userModel')
+const userRole = require('../model/userRole')
 const jwt = require('jsonwebtoken')
 const userSchema = require('../model/userModel')
 const bcrypt = require('bcrypt')
@@ -39,8 +40,14 @@ const userRegister = async (req,res) => {
 
     try {
         
+        var userRoleType = 'customer'
         const existingUser = await User.findOne({email})
+        const existingRole = await userRole.findOne({email})
         
+        if(existingRole){
+             userRoleType = existingRole.user_role
+        }
+
         if(existingUser) return res.status(400).json({ message: "User already exist"})
 
         if(password !== confpassword){
@@ -48,7 +55,7 @@ const userRegister = async (req,res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 12)
-        const newUser = {fullname:fullname, email:email,password:hashedPassword}
+        const newUser = {fullname:fullname, email:email,password:hashedPassword,user_role:userRoleType}
 
         const result =  await new userSchema(newUser).save()
         

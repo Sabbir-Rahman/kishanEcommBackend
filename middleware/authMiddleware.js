@@ -41,7 +41,7 @@ const isSuperAdmin = (req,res,next) => {
 
     jwt.verify(token,process.env.ACCESS_TOKEN_SECRET, (err,tokenUser)=>{
         if (err) return res.status(403).json({'message':err})
-        console.log(tokenUser.user_role)
+       
         if(tokenUser.user_role =='super_admin'){
             req.user = tokenUser
             next()
@@ -67,7 +67,7 @@ const isAdmin = (req,res,next) => {
 
     jwt.verify(token,process.env.ACCESS_TOKEN_SECRET, (err,tokenUser)=>{
         if (err) return res.status(403).json({'message':err})
-        console.log(tokenUser.user_role)
+      
         if(tokenUser.user_role =='admin'){
             req.user = tokenUser
             next()
@@ -93,7 +93,7 @@ const isOperator = (req,res,next) => {
 
     jwt.verify(token,process.env.ACCESS_TOKEN_SECRET, (err,tokenUser)=>{
         if (err) return res.status(403).json({'message':err})
-        console.log(tokenUser.user_role)
+      
         if(tokenUser.user_role =='operator'){
             req.user = tokenUser
             next()
