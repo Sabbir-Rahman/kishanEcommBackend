@@ -73,6 +73,14 @@ describe('Product api', function () {
         return request(app)
         .post('/product/verify')
         .set("Authorization", "Bearer " + token)
+        .send(
+            {
+                "productId":"60e33350a03fdd51eda852e7",
+                "isVerified": true,
+                "message": "Thanks for you effort your product islive"
+                
+            }
+        )
         .expect(200)
         .then((res)=>{
             expect(res.body.message).to.equal('Verify Product Succesfull')

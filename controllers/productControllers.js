@@ -67,7 +67,33 @@ const editProducts = async (req, res) => {
 }
 
 const productVerify = async (req, res) => {
-    res.json({ 'message': 'Verify Product Succesfull' })
+
+    const {productId,isVerified,message} = req.body
+
+   
+
+    const product = await productSchema.findOneAndUpdate(
+        {
+            _id: productId,
+        },
+        {
+            isVerified:isVerified,
+        }
+    )
+
+    const notificationMessage = message
+    const newNotificationSeller = {
+        "user_id": product.seller_id,
+        "user_role": "customer",
+        "message": notificationMessage,
+        "type": "product_verification"
+    }
+    if (req.user.email == 'testadmin@kishan.com') {
+        res.json({ 'message': 'Verify Product Succesfull','data':'This test admin not hit main db'})
+    }
+    const notificationResultSeller = await new notificationSchema(newNotificationSeller).save()
+
+    res.json({ 'message': 'Verify Product Succesfull','data':product,'notificationSeller': notificationResultSeller})
 }
 
 const productViewAdmin = async (req, res) => {
