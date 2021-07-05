@@ -20,7 +20,7 @@ const requiredUniqueString = {
 const notificationSchema = mongoose.Schema({
     user_id: isString,
     user_role: isString,
-    message: requiredUniqueString,
+    message: isString,
     type: isString,
     timestamp: isString,
     

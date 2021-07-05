@@ -33,7 +33,8 @@ const addProducts = async (req, res) => {
         "district": district,
         "upazilla": upazilla,
         "isVerified": false,
-        "isAvailableNow": false
+        "isAvailableNow": false,
+        "timestamp": new Date()
     }
 
 

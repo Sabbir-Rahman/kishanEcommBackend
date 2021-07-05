@@ -75,7 +75,7 @@ describe('Product api', function () {
         .set("Authorization", "Bearer " + token)
         .send(
             {
-                "productId":"60e33350a03fdd51eda852e7",
+                "productId":"60e3584ea06c012b97571248",
                 "isVerified": true,
                 "message": "Thanks for you effort your product islive"
                 
