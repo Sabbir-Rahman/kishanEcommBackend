@@ -3,8 +3,14 @@ const jwt = require('jsonwebtoken')
 const userSchema = require('../model/userModel')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
+const dotenv = require('dotenv')
+dotenv.config()
 const test = ((req,res) => {
     res.send('Hello this is from auth')
+})
+
+const authTest = ((req,res) => {
+    res.json(req.user)
 })
 
 const databaseTest = async (req,res)=>{
@@ -45,8 +51,9 @@ const userRegister = async (req,res) => {
         const newUser = {fullname:fullname, email:email,password:hashedPassword}
 
         const result =  await new userSchema(newUser).save()
-       
-        const token = jwt.sign({ email: result.email, id: result._id }, 'test', { expiresIn: "1h"})
+        
+        const tokenUser = {email: result.email, id: result._id}
+        const token = jwt.sign(tokenUser, process.env.ACCESS_TOKEN_SECRET)
           
         res.status(201).json({ result, token})
         
@@ -72,8 +79,8 @@ const userLogin = async (req,res) => {
         if(!isPasswordCorrect){
             return res.status(400).json({ message: "Invalid credentials"})
         }
-
-        const token = jwt.sign({ email: existingUser.email, id: existingUser._id}, 'test', { expiresIn: "1h"})
+        const tokenUser = {email: existingUser.email, id: existingUser._id}
+        const token = jwt.sign(tokenUser, process.env.ACCESS_TOKEN_SECRET)
         res.status(200).json({result: existingUser, token})
     
     } catch (error) {
@@ -81,4 +88,4 @@ const userLogin = async (req,res) => {
     }
 }
 
-module.exports = {test, databaseTest, userRegister, userLogin}
+module.exports = {test, databaseTest, userRegister, userLogin, authTest}
