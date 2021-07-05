@@ -27,9 +27,55 @@ describe('Product api', function () {
         .post('/product/add')
         .set("Authorization", "Bearer " + token)
         .expect(200)
+        .then((res)=>{
+            expect(res.body.message).to.equal('Add Product Succesfull')
+        })
         
     })
     
+    it('GET /product/view --> view product', () => { 
+        return request(app)
+        .get('/product/view')
+        .expect(200)
+        .then((res)=>{
+            expect(res.body.message).to.equal('View Product Succesfull')
+        })
+        
+    })
+
+    it('GET /product/verify --> view product of admin', () => { 
+        return request(app)
+        .get('/product/verify')
+        .set("Authorization", "Bearer " + token)
+        .expect(200)
+        .then((res)=>{
+            expect(res.body.message).to.equal('View Product Succesfull')
+        })
+        
+    })
+
+    it('POST /product/verify --> verify product of admin', () => { 
+        return request(app)
+        .post('/product/verify')
+        .set("Authorization", "Bearer " + token)
+        .expect(200)
+        .then((res)=>{
+            expect(res.body.message).to.equal('Verify Product Succesfull')
+        })
+        
+    })
+
+
+    it('POST /product/edit --> edit product', () => { 
+        return request(app)
+        .put('/product/update')
+        .set("Authorization", "Bearer " + token)
+        .expect(200)
+        .then((res)=>{
+            expect(res.body.message).to.equal('Edit Product Succesfull')
+        })
+        
+    })
 
     
 

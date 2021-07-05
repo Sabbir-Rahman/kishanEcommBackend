@@ -16,7 +16,7 @@ const viewAllProducts = async(req,res) => {
 }
 
 const addProducts = async (req,res) => {
-    res.json({'message':'Add Product Succesfull'}).status(200)
+    res.json({'message':'Add Product Succesfull'}).status(201)
 }
 
 const editProducts = async (req,res) => {

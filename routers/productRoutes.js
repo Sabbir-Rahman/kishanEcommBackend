@@ -16,8 +16,9 @@ router.use('/verify',isAllowProductVerify)
 
 router.get('/',test)
 router.post('/add',addProducts)
-router.post('/view',viewAllProducts)
-router.route('/verify').get().post()
+router.put('/update',editProducts)
+router.get('/view',viewAllProducts)
+router.route('/verify').get(productViewAdmin).post(productVerify)
 
 
 module.exports = router
