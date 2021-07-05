@@ -52,10 +52,10 @@ const userRegister = async (req,res) => {
 
         const result =  await new userSchema(newUser).save()
         
-        const tokenUser = {email: result.email, id: result._id}
+        const tokenUser = {id: result._id,fullname:result.fullname,email: result.email,user_role:result.user_role}
         const token = jwt.sign(tokenUser, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10h'})
           
-        res.status(201).json({ result, token})
+        res.status(201).json({ tokenUser, token})
         
         
     } catch (error) {

@@ -6,6 +6,11 @@ const requiredString = {
     required: true
 }
 
+const isString = {
+    type: String,
+    
+}
+
 const requiredUniqueString = {
     type: String,
     required: true,
@@ -15,7 +20,8 @@ const requiredUniqueString = {
 const userSchema = mongoose.Schema({
     fullname: requiredString,
     email: requiredUniqueString,
-    password: requiredString
+    password: requiredString,
+    user_role: String
     
 })
 
