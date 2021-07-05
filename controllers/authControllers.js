@@ -79,11 +79,12 @@ const userLogin = async (req,res) => {
         if(!isPasswordCorrect){
             return res.status(400).json({ message: "Invalid credentials"})
         }
-        const tokenUser = {email: existingUser.email, id: existingUser._id}
+        const tokenUser = {id: existingUser._id,fullname:existingUser.fullname,email: existingUser.email,user_role:existingUser.user_role}
         const token = jwt.sign(tokenUser, process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '10h'})
         res.status(200).json({result: existingUser, token})
     
     } catch (error) {
+       
         res.status(500).json({ message: "Something went wrong"})
     }
 }

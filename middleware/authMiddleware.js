@@ -31,4 +31,80 @@ const isLoggedIn = (req,res,next) => {
     
 }
 
-module.exports = isLoggedIn
+const isSuperAdmin = (req,res,next) => {
+
+   
+    const autheHeader = req.headers['authorization']
+    const token = autheHeader && autheHeader.split(' ')[1]
+
+    if (token== null) return res.status(401).json({'message':'Token invalid'})
+
+    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET, (err,tokenUser)=>{
+        if (err) return res.status(403).json({'message':err})
+        console.log(tokenUser.user_role)
+        if(tokenUser.user_role =='super_admin'){
+            req.user = tokenUser
+            next()
+        }
+        else{
+            res.status(400).json({'message':'You are not superadmin'})
+        }
+       
+    })
+
+
+    
+}
+
+
+const isAdmin = (req,res,next) => {
+
+   
+    const autheHeader = req.headers['authorization']
+    const token = autheHeader && autheHeader.split(' ')[1]
+
+    if (token== null) return res.status(401).json({'message':'Token invalid'})
+
+    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET, (err,tokenUser)=>{
+        if (err) return res.status(403).json({'message':err})
+        console.log(tokenUser.user_role)
+        if(tokenUser.user_role =='admin'){
+            req.user = tokenUser
+            next()
+        }
+        else{
+            res.status(400).json({'message':'You are not admin'})
+        }
+        
+       
+    })
+
+
+    
+}
+
+const isOperator = (req,res,next) => {
+
+   
+    const autheHeader = req.headers['authorization']
+    const token = autheHeader && autheHeader.split(' ')[1]
+
+    if (token== null) return res.status(401).json({'message':'Token invalid'})
+
+    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET, (err,tokenUser)=>{
+        if (err) return res.status(403).json({'message':err})
+        console.log(tokenUser.user_role)
+        if(tokenUser.user_role =='operator'){
+            req.user = tokenUser
+            next()
+        }else{
+            res.status(400).json({'message':'You are not operator'})
+        }
+        
+       
+    })
+
+
+    
+}
+module.exports = { isLoggedIn, isSuperAdmin,isAdmin,isOperator}
