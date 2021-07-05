@@ -24,8 +24,8 @@ describe('Auth api', function () {
     it('POST /auth/login --> login of a user', () => { 
         return request(app)
         .post('/auth/login').send({
-            email: 'sabbirrahman42@iut-dhaka.edu',
-            password: '123456'
+            email: 'test@gmail.com',
+            password: 'password@1234'
         })
         .expect('Content-Type', /json/)
         .expect(200)

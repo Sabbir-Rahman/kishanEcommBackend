@@ -7,7 +7,6 @@
     "dev": "nodemon app.js",
     "test": "mocha --timeout 60000 ./test/* --exit",
     "start": "node app.js"
-    
   },
   "keywords": [],
   "author": "",

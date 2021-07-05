@@ -3,7 +3,7 @@ const router = express.Router()
 
 
 
-const isLoggedIn = require('../middleware/authMiddleware')
+const isLoggedIn = require('../middleware/authMiddleware').isLoggedIn
 
 const { test,databaseTest, userRegister, userLogin,authTest } = require('../controllers/authControllers')
 

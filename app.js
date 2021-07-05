@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const authRoutes = require('./routers/authRoutes')
+const roleRoutes = require('./routers/roleRoutes')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 dotenv.config()
@@ -23,6 +24,7 @@ app.get('/',(req,res)=> {
 })
 
 app.use('/auth',authRoutes)
+app.use('/role',roleRoutes)
 
 
 
