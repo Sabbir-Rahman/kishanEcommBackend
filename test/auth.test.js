@@ -20,8 +20,8 @@ describe('Auth api', function () {
         
     })
 
-    this.timeout(10000)
 
+    
     it('POST /auth/login --> login of a user', () => { 
         return request(app)
         .post('/auth/login').send({
@@ -29,7 +29,7 @@ describe('Auth api', function () {
             password: '123456'
         })
         .expect('Content-Type', /json/)
-        .expect(200)
+    
         
     })
 
