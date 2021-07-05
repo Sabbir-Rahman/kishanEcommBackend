@@ -1,5 +1,6 @@
 const product = require('../model/productModel')
 const productSchema = require('../model/productModel')
+var mongoose = require('mongoose');
 
 const notification = require('../model/notificationModel')
 const notificationSchema = require('../model/notificationModel')
@@ -15,6 +16,8 @@ const viewAllProducts = async (req, res) => {
 
     res.json({ 'message': 'View Product Succesfull'})
 }
+
+
 
 const addProducts = async (req, res) => {
 
@@ -65,9 +68,22 @@ const addProducts = async (req, res) => {
     res.json({ 'message': 'Add Product Succesfull', 'data': result, 'notificationAdmin': notificationResultAdmin, 'notificationManager': notificationResultManager }).status(201)
 }
 
+
+
 const editProducts = async (req, res) => {
+    const { id } = req.query
+    const product = req.body
+
+   //check if product exist
+    const existingProduct = await productSchema.findById(mongoose.Types.ObjectId(id))
+
+    if(!existingProduct) return res.status(400).json({ message: "Product doesn't exist"})
+
+
     res.json({ 'message': 'Edit Product Succesfull' })
 }
+
+
 
 const productVerify = async (req, res) => {
 
