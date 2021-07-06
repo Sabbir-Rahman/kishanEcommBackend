@@ -20,13 +20,22 @@ describe('Product upload api', function () {
         
     })
 
+    it('GET /product/view --> view product not found test', () => { 
+        return request(app)
+        .get('/product/view/not found')
+        .expect(404)
+        
+        
+        
+    })
 
-    it('GET /product/view --> view product', () => { 
+
+    it('GET /product/view --> view product verified test', () => { 
         return request(app)
         .get('/product/view')
         .expect(200)
         .then((res)=>{
-            console.log(res.body)
+            expect(res.body.data[0]['isVerified']).to.equal(true)
         })
         
         
