@@ -7,7 +7,7 @@ var token = ""
 const dotenv = require('dotenv')
 dotenv.config()
 
-describe('Product api', function () {
+describe('Product upload api', function () {
    
     it('POST /auth/login --> login of test admin user for token', () => { 
         return request(app)
@@ -51,10 +51,8 @@ describe('Product api', function () {
     it('GET /product/view --> view product', () => { 
         return request(app)
         .get('/product/view')
-        .expect(200)
-        .then((res)=>{
-            expect(res.body.message).to.equal('View Product Succesfull')
-        })
+        .expect(404)
+        
         
     })
 

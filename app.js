@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const authRoutes = require('./routers/authRoutes')
 const roleRoutes = require('./routers/roleRoutes')
-const productRoutes = require('./routers/productRoutes')
+const productUploadRoutes = require('./routers/productRoutes')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 var cors = require('cors')
@@ -29,7 +29,7 @@ app.get('/',(req,res)=> {
 
 app.use('/auth',authRoutes)
 app.use('/role',roleRoutes)
-app.use('/product',productRoutes)
+app.use('/product',productUploadRoutes)
 
 
 

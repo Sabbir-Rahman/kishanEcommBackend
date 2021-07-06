@@ -11,12 +11,6 @@ const test = ((req, res) => {
     res.json({ 'message': 'Test succesfull' })
 })
 
-const viewAllProducts = async (req, res) => {
-    
-
-    res.json({ 'message': 'View Product Succesfull'})
-}
-
 
 
 const addProducts = async (req, res) => {
@@ -152,4 +146,4 @@ const productViewAdmin = async (req, res) => {
 }
 
 
-module.exports = { test, viewAllProducts, addProducts, editProducts, productVerify, productViewAdmin }
+module.exports = { test, addProducts, editProducts, productVerify, productViewAdmin }
