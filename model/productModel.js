@@ -21,6 +21,11 @@ const isNumber = {
     
 }
 
+const isNumberDefaultZero = {
+    type: Number,
+    default:0
+    
+}
 const requiredNumber = {
     type: Number,
     required: true
@@ -48,7 +53,7 @@ const productSchema = mongoose.Schema({
     unitPrize: requiredNumber,
     bookingPercentage: isNumber,
     available: requiredNumber,
-    minOrder: isNumber,
+    minOrder: isNumberDefaultZero,
     rating: isNumber,
     availableDate: requiredDate,
     division: requiredString,

@@ -39,7 +39,11 @@ const orderProduct = async(req,res) => {
     }
 
     if(quantity< product.minOrder){
-        return res.status(400).json({'message':"Please order atleast the minimum amount"}).status(400)
+        return res.status(400).json({'message':"Please order atleast the minimum amount"})
+    }
+
+    if(quantity> product.available){
+        return res.status(400).json({'message':"Please order less than available amount"})
     }
 
     if(product.bookingPercentage){
@@ -91,6 +95,11 @@ const orderProduct = async(req,res) => {
         "message": buyerNotificationMessage,
         "type": "product_order_request",
         "timestamp": new Date()
+    }
+
+    //bypass data for testing not added to real db
+    if (req.user.email == 'testadmin@kishan.com') {
+        return res.json({ 'message': 'Add Product Succesfull', 'data': 'You are testing datbase product not added' })
     }
 
     const newBuyRequest = await new productBuyRequestSchema(buyRequest).save()

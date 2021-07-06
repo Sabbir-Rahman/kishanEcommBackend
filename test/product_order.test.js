@@ -33,9 +33,7 @@ describe('Product order api', function () {
             }
         )
         .expect(200)
-        .then((res)=>{
-            expect(res.body.message).to.equal('Product order Succesfull wait for acceptance')
-        })
+       
         
     })
 
@@ -52,6 +50,24 @@ describe('Product order api', function () {
         .expect(400)
         .then((res)=>{
             expect(res.body.message).to.equal('Please order atleast the minimum amount')
+        })
+        
+    })
+
+
+    it('POST /product/order --> order than max order', () => { 
+        return request(app)
+        .post('/product/order')
+        .set("Authorization", "Bearer " + token)
+        .send(
+            {
+                "productId":"60e35a0f31092c2eb211b59f",
+                "quantity":"300"
+            }
+        )
+        .expect(400)
+        .then((res)=>{
+            expect(res.body.message).to.equal('Please order less than available amount')
         })
         
     })
