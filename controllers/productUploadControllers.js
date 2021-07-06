@@ -115,7 +115,9 @@ const productVerify = async (req, res) => {
             isVerified:isVerified,
         }
     )
-
+    
+    product.isVerified = true
+    
     const notificationMessage = message
     const newNotificationSeller = {
         "user_id": product.seller_id,
