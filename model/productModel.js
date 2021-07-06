@@ -46,6 +46,7 @@ const productSchema = mongoose.Schema({
     description: requiredString,
     unitName: requiredString,
     unitPrize: requiredNumber,
+    bookingPercentage: isNumber,
     available: requiredNumber,
     minOrder: isNumber,
     rating: isNumber,

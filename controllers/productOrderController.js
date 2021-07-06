@@ -23,6 +23,9 @@ const orderProduct = async(req,res) => {
 
     const user = await User.findOne({ "_id":req.user.id })
 
+    //default booking percentage
+    var bookingPercentage = 10
+
     if(!product){
         return res.status(400).json({'message':"Product not find"})
     }
@@ -30,6 +33,11 @@ const orderProduct = async(req,res) => {
     if(quantity< product.minOrder){
         return res.status(400).json({'message':"Please order atleast the minimum amount"}).status(400)
     }
+
+    if(product.bookingPercentage){
+        bookingPercentage = product.bookingPercentage
+    }
+
 
     const buyRequest = {
         "product_id": productId,
@@ -42,6 +50,7 @@ const orderProduct = async(req,res) => {
         "buyingQuantityUnit": product.unitName,
         "buyingQuantity": quantity,
         "buyingMoney": product.unitPrize * quantity,
+        "bookingMoney": (product.unitPrize * quantity)* (bookingPercentage/100),
         "status" : "pending",
 
         
@@ -54,6 +63,7 @@ const orderProduct = async(req,res) => {
         "buyingQuantityUnit": product.unitName,
         "buyingQuantity": quantity,
         "buyingMoney": product.unitPrize * quantity,
+        "bookingMoney": (product.unitPrize * quantity)* (bookingPercentage/100),
         "status" : "pending",
     }
 
