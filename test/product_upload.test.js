@@ -48,14 +48,7 @@ describe('Product upload api', function () {
         
     })
     
-    it('GET /product/view --> view product', () => { 
-        return request(app)
-        .get('/product/view')
-        .expect(404)
-        
-        
-    })
-
+   
     it('GET /product/verify --> view product of admin', () => { 
         return request(app)
         .get('/product/verify')
