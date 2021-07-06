@@ -70,11 +70,23 @@ const editProducts = async (req, res) => {
     product.isVerified = false
     product.timestamp = new Date()
 
+   
+
    //check if product exist
     const existingProduct = await productSchema.findById(mongoose.Types.ObjectId(id))
 
-    if(!existingProduct) return res.status(400).json({ message: "Product doesn't exist"})
+    
+    
 
+    if(!existingProduct) return res.status(400).json({ message: "Product doesn't exist"})
+    
+    if(existingProduct.seller_id != req.user.id){
+        return res.status(400).json({ 'message': 'This is not your product' })
+    }
+    //bypass data for testing not added to real db
+    if (req.user.email == 'testadmin@kishan.com') {
+        return res.status(200).json({ 'message': 'Edit Product Succesfull', 'data': 'You are testing datbase product not added' })
+    }
     const updatedProduct = await productSchema.findByIdAndUpdate(id, { ...product,id}, { new: true})
 
     const notificationMessage = `Seller id:${updatedProduct.seller_id} updated product id:${updatedProduct._id} please check for verify`
@@ -92,11 +104,13 @@ const editProducts = async (req, res) => {
         "type": "product_verification",
         "timestamp": new Date()
     }
+
+    
     const notificationResultAdmin = await new notificationSchema(newNotificationAdmin).save()
     const notificationResultManager = await new notificationSchema(newNotificationManager).save()
 
 
-    res.json({ 'message': 'Edit Product Succesfull' ,'date':updatedProduct,'notificationAdmin': notificationResultAdmin, 'notificationManager': notificationResultManager})
+    return res.json({ 'message': 'Edit Product Succesfull' ,'date':updatedProduct,'notificationAdmin': notificationResultAdmin, 'notificationManager': notificationResultManager})
 }
 
 
