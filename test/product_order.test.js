@@ -26,9 +26,30 @@ describe('Product order api', function () {
         return request(app)
         .post('/product/order')
         .set("Authorization", "Bearer " + token)
+        .send(
+            {
+                "productId":"60e35a0f31092c2eb211b59f"
+            }
+        )
         .expect(200)
         .then((res)=>{
             expect(res.body.message).to.equal('Product order Succesfull wait for acceptance')
+        })
+        
+    })
+
+    it('POST /product/order --> product not exist', () => { 
+        return request(app)
+        .post('/product/order')
+        .set("Authorization", "Bearer " + token)
+        .send(
+            {
+                "productId":"60e35a0f31092c111111b59f"
+            }
+        )
+        .expect(200)
+        .then((res)=>{
+            expect(res.body.message).to.equal('Product not find')
         })
         
     })
@@ -38,6 +59,13 @@ describe('Product order api', function () {
         .post('/product/orderWrong')
         .set("Authorization", "Bearer " + token)
         .expect(404)
+        
+    })
+
+    it('POST /product/orderWrong --> order product without token', () => { 
+        return request(app)
+        .post('/product/order')
+        .expect(401)
         
     })
 

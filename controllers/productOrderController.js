@@ -15,15 +15,17 @@ const testView = ((req, res) => {
 
 const orderProduct = async(req,res) => {
 
-    
+    const { productId } = req.body
 
+    const product =  await productSchema.findOne({ "_id":productId });
+
+    if(!product){
+        res.json({'message':"Product not find"})
+    }
+
+    console.log(product)
    
-    // //pass req.query for filter as req.query want
     
-    // const sortByTimestampDesc = {'_id': -1}
-    // const products = await product.find(
-    //     req.query
-    // ).sort(sortByTimestampDesc)
     
     res.json({ 'message': 'Product order Succesfull wait for acceptance'})
 }

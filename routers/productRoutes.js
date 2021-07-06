@@ -11,9 +11,10 @@ const {test,addProducts,editProducts,productVerify,productViewAdmin} = require('
 const {testView, viewAllProduct} = require('../controllers/productViewControllers')
 
 const {orderProduct}  = require('../controllers/productOrderController')
+
 router.use('/add',isLoggedIn)
 router.use('/verify',isAllowProductVerify)
-
+router.use('/order',isLoggedIn)
 
 
 router.get('/',testView)
