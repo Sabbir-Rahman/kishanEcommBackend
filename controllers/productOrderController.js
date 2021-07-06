@@ -14,9 +14,7 @@ const notificationSchema = require('../model/notificationModel')
 const dotenv = require('dotenv')
 dotenv.config()
 
-const testView = ((req, res) => {
-    res.json({ 'message': 'View Test succesfull' })
-})
+
 
 
 const orderProduct = async(req,res) => {
@@ -111,4 +109,21 @@ const orderProduct = async(req,res) => {
     return res.status(200).json({ 'message': 'Product order Succesfull wait for acceptance',"orderRequest":newOrderRequest,"buyRequst":newBuyRequest,"sellerNotification":notificationSeller,"buyerNotification":notificationBuyer})
 }
 
-module.exports = {testView, orderProduct}
+
+const viewBuyProductRequest = async(req,res)=> {
+    return res.status(200).json({ 'message': 'Product order buy request view succesfully'})
+}
+
+const acceptOrder = async(req,res)=>{
+
+    return res.status(200).json({ 'message': 'Product order accepted succesfully'})
+}
+
+
+const viewOrderRequest = async(req,res)=> {
+    return res.status(200).json({ 'message': 'Product order request view succesfully'})
+}
+
+
+
+module.exports = {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest}

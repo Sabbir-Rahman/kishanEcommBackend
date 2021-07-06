@@ -10,7 +10,9 @@ const {test,addProducts,editProducts,productVerify,productViewAdmin} = require('
 
 const {testView, viewAllProduct} = require('../controllers/productViewControllers')
 
-const {orderProduct}  = require('../controllers/productOrderController')
+const {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest}  = require('../controllers/productOrderController')
+
+
 
 router.use('/add',isLoggedIn)
 router.use('/verify',isAllowProductVerify)
@@ -27,4 +29,5 @@ router.route('/verify').get(productViewAdmin).post(productVerify)
 router.get('/view',viewAllProduct)
 
 router.post('/order',orderProduct)
+router.route('/order/buyRequest').get(viewBuyProductRequest).post(acceptOrder)
 module.exports = router
