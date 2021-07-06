@@ -14,9 +14,7 @@ const notificationSchema = require('../model/notificationModel')
 const dotenv = require('dotenv')
 dotenv.config()
 
-const testView = ((req, res) => {
-    res.json({ 'message': 'View Test succesfull' })
-})
+
 
 
 const orderProduct = async(req,res) => {
@@ -24,6 +22,17 @@ const orderProduct = async(req,res) => {
     const { productId,quantity} = req.body
 
     const product =  await productSchema.findOne({ "_id":productId });
+    
+    const existingProductRequest = await productBuyRequest.find({
+        "product_id": productId,
+        "buyer_id": req.user.id,
+        "status":"pending"
+    })
+
+    //bypass logic for admin
+    if(existingProductRequest && req.user.email != 'testadmin@kishan.com'){
+        return res.status(400).json({'message':"You have a pending order for the same product"})
+    }
 
     const user = await User.findOne({ "_id":req.user.id })
 
@@ -55,6 +64,7 @@ const orderProduct = async(req,res) => {
         "product_id": productId,
         "productName": product.name,
         "buyer_id": req.user.id,
+        "seller_id": product.seller_id,
         "buyerName": req.user?.fullname,
         "buyerAddress": user?.address,
         "buyerPhone": user?.phone_no,
@@ -71,6 +81,7 @@ const orderProduct = async(req,res) => {
     const orderRequest = {
         "product_id": productId,
         "productName": product.name,
+        "buyer_id": req.user.id,
         "seller_id": product.seller_id,
         "buyingQuantityUnit": product.unitName,
         "buyingQuantity": quantity,
@@ -111,4 +122,27 @@ const orderProduct = async(req,res) => {
     return res.status(200).json({ 'message': 'Product order Succesfull wait for acceptance',"orderRequest":newOrderRequest,"buyRequst":newBuyRequest,"sellerNotification":notificationSeller,"buyerNotification":notificationBuyer})
 }
 
-module.exports = {testView, orderProduct}
+
+const viewBuyProductRequest = async(req,res)=> {
+    const sortByTimestampDesc = {'_id': -1}
+    const request = await productBuyRequest.find({
+        "seller_id":req.user.id,
+        "status": "pending"
+    }).sort(sortByTimestampDesc)
+
+    return res.status(200).json({ 'message': 'Product order buy request view succesfully','data':request})
+}
+
+const acceptOrder = async(req,res)=>{
+
+    return res.status(200).json({ 'message': 'Product order accepted succesfully'})
+}
+
+
+const viewOrderRequest = async(req,res)=> {
+    return res.status(200).json({ 'message': 'Product order request view succesfully'})
+}
+
+
+
+module.exports = {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest}
