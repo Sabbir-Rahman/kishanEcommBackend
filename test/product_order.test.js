@@ -1,0 +1,45 @@
+
+const chai = require('chai')
+const request = require('supertest')
+const app = require('../app')
+var expect = chai.expect;
+var token = ""
+const dotenv = require('dotenv')
+dotenv.config()
+
+describe('Product order api', function () {
+
+    it('POST /auth/login --> login of test admin user for token', () => { 
+        return request(app)
+        .post('/auth/login').send({
+            email: process.env.TEST_ADMIN_EMAIL,
+            password: process.env.TEST_ADMIN_PASSWORD
+        })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then((res)=>{
+            token = res.body.token
+        })
+    })
+
+    it('POST /product/order --> order product', () => { 
+        return request(app)
+        .post('/product/order')
+        .set("Authorization", "Bearer " + token)
+        .expect(200)
+        .then((res)=>{
+            expect(res.body.message).to.equal('Product order Succesfull wait for acceptance')
+        })
+        
+    })
+
+    it('POST /product/orderWrong --> order product wrong url', () => { 
+        return request(app)
+        .post('/product/orderWrong')
+        .set("Authorization", "Bearer " + token)
+        .expect(404)
+        
+    })
+
+
+})
