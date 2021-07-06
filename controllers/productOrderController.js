@@ -15,19 +15,23 @@ const testView = ((req, res) => {
 
 const orderProduct = async(req,res) => {
 
-    const { productId } = req.body
+    const { productId,quantity} = req.body
 
     const product =  await productSchema.findOne({ "_id":productId });
 
     if(!product){
-        res.json({'message':"Product not find"})
+        res.status(400).json({'message':"Product not find"})
     }
 
-    console.log(product)
+    if(quantity< product.minOrder){
+        res.status(400).json({'message':"Please order atleast the minimum amount"}).status(400)
+    }
+
+    console.log(product.unitPrize * quantity)
    
     
     
-    res.json({ 'message': 'Product order Succesfull wait for acceptance'})
+    res.status(200).json({ 'message': 'Product order Succesfull wait for acceptance'})
 }
 
 module.exports = {testView, orderProduct}
