@@ -44,6 +44,7 @@ const productBuyRequestSchema = mongoose.Schema({
     product_id: requiredString,
     productName: isString,
     buyer_id: requiredString,
+    seller_id: requiredString,
     buyerName: isString,
     buyerAddress: isString,
     buyerPhone: isString,
