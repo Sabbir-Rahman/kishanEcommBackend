@@ -23,8 +23,7 @@ const userSchema = mongoose.Schema({
     password: requiredString,
     phone_no: isString,
     address: isString,
-    image: isString
-
+    image: isString,
     user_role: String
     
 })
