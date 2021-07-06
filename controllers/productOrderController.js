@@ -33,6 +33,7 @@ const orderProduct = async(req,res) => {
 
     const buyRequest = {
         "product_id": productId,
+        "productName": product.name,
         "buyer_id": req.user.id,
         "buyerName": req.user?.fullname,
         "buyerAddress": user?.address,
@@ -46,9 +47,19 @@ const orderProduct = async(req,res) => {
         
     }
 
-    console.log(buyRequest)
+    const orderRequest = {
+        "product_id": productId,
+        "productName": product.name,
+        "seller_id": product.seller_id,
+        "buyingQuantityUnit": product.unitName,
+        "buyingQuantity": quantity,
+        "buyingMoney": product.unitPrize * quantity,
+        "status" : "pending",
+    }
+
+    console.log(orderRequest)
     
-    console.log(product.unitPrize * quantity)
+    
    
     
     

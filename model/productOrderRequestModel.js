@@ -42,6 +42,7 @@ const requiredBoolean = {
 
 const productOrderRequestSchema = mongoose.Schema({
     product_id: requiredString,
+    productName: isString,
     seller_id: requiredString,
     buyingQuantityUnit: requiredString,
     buyingQuantity: requiredNumber,
