@@ -18,9 +18,13 @@ const requiredUniqueString = {
 }
 
 const userSchema = mongoose.Schema({
-    fullname: requiredString,
+    fullname: isString,
     email: requiredUniqueString,
     password: requiredString,
+    phone_no: isString,
+    address: isString,
+    image: isString
+
     user_role: String
     
 })
