@@ -22,6 +22,7 @@ const orderProduct = async(req,res) => {
     const { productId,quantity} = req.body
 
     const product =  await productSchema.findOne({ "_id":productId });
+    
 
     const user = await User.findOne({ "_id":req.user.id })
 
@@ -53,6 +54,7 @@ const orderProduct = async(req,res) => {
         "product_id": productId,
         "productName": product.name,
         "buyer_id": req.user.id,
+        "seller_id": product.seller_id,
         "buyerName": req.user?.fullname,
         "buyerAddress": user?.address,
         "buyerPhone": user?.phone_no,
@@ -69,6 +71,7 @@ const orderProduct = async(req,res) => {
     const orderRequest = {
         "product_id": productId,
         "productName": product.name,
+        "buyer_id": req.user.id,
         "seller_id": product.seller_id,
         "buyingQuantityUnit": product.unitName,
         "buyingQuantity": quantity,
@@ -111,6 +114,11 @@ const orderProduct = async(req,res) => {
 
 
 const viewBuyProductRequest = async(req,res)=> {
+    const sortByTimestampDesc = {'_id': -1}
+    // const request = await productBuyRequest.find({
+    //     ""
+    //     "status": "pending"
+    // }).sort(sortByTimestampDesc)
     return res.status(200).json({ 'message': 'Product order buy request view succesfully'})
 }
 
