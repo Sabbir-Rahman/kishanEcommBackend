@@ -86,10 +86,24 @@ describe('Product upload api', function () {
         .set("Authorization", "Bearer " + token)
         .expect(400)
         .then((res)=>{
+           
             expect(res.body.message).to.equal("Product doesn't exist")
         })
         
     })
+
+    it('POST /product/edit --> edit product', () => { 
+        return request(app)
+        .put('/product/update?id=60e4ac95e563ae1382a920cd')
+        .set("Authorization", "Bearer " + token)
+        .expect(400)
+        .then((res)=>{
+           
+            expect(res.body.message).to.equal("This is not your product")
+        })
+        
+    })
+    
 
     it('POST /product/edit --> edit product', () => { 
         return request(app)
