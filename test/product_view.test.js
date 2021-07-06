@@ -29,6 +29,17 @@ describe('Product upload api', function () {
         
     })
 
+    it('GET /product/view --> view single product test', () => { 
+        return request(app)
+        .get('/product/view?_id=60e35a0f31092c2eb211b59f')
+        .expect(200)
+        .then((res)=>{
+            expect(res.body.data[0]['isVerified']).to.equal(true)
+        })
+        
+        
+        
+    })
 
     it('GET /product/view --> view product verified test', () => { 
         return request(app)

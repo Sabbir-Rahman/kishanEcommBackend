@@ -15,11 +15,16 @@ const testView = ((req, res) => {
 
 const viewAllProduct = async(req,res) => {
 
-    const sortByTimestampDesc = {'_id': -1}
-    const products = await product.find({
-        "isVerified": true
-    }).sort(sortByTimestampDesc)
+    req.query.isVerified = true
 
+   
+    //pass req.query for filter as req.query want
+    
+    const sortByTimestampDesc = {'_id': -1}
+    const products = await product.find(
+        req.query
+    ).sort(sortByTimestampDesc)
+    
     res.json({ 'message': 'View Product by anyone Succesfull', 'data': products })
 }
 
