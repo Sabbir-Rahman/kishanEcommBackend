@@ -46,7 +46,7 @@ const productOrderRequestSchema = mongoose.Schema({
     seller_id: requiredString,
     buyingQuantityUnit: requiredString,
     buyingQuantity: requiredNumber,
-    buyingMoney: requiredNumber.required,
+    buyingMoney: requiredNumber,
     bookingMoney: requiredNumber,
     status : requiredString,
     timestamp: {

@@ -56,6 +56,23 @@ describe('Product order api', function () {
         
     })
 
+    it('POST /product/order --> order less than min order', () => { 
+        return request(app)
+        .post('/product/order')
+        .set("Authorization", "Bearer " + token)
+        .send(
+            {
+                "productId":"60e35a0f31092c2eb211b59f"
+               
+            }
+        )
+        .expect(400)
+        .then((res)=>{
+            expect(res.body.message).to.equal('You must add quantity')
+        })
+        
+    })
+
     it('POST /product/order --> product not exist', () => { 
         return request(app)
         .post('/product/order')
