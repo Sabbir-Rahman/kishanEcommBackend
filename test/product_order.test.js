@@ -120,7 +120,7 @@ describe('Product order api', function () {
         
     })
 
-    it('POST /product/order/buyRequest --> product buy request view', () => { 
+    it('GET /product/order/buyRequest --> product buy request view', () => { 
         return request(app)
         .get('/product/order/buyRequest')
         .set("Authorization", "Bearer " + token)

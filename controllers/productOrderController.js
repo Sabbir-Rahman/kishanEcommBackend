@@ -127,7 +127,6 @@ const viewBuyProductRequest = async(req,res)=> {
     const sortByTimestampDesc = {'_id': -1}
     const request = await productBuyRequest.find({
         "seller_id":req.user.id,
-        "status": "pending"
     }).sort(sortByTimestampDesc)
 
     return res.status(200).json({ 'message': 'Product order buy request view succesfully','data':request})
