@@ -12,13 +12,14 @@ const {testView, viewAllProduct} = require('../controllers/productViewController
 
 const {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest}  = require('../controllers/productOrderController')
 
-const {bookingMoneyPayment, bookingPaymentInfo,sslCommerze} = require('../controllers/productPaymentControllers')
+const {bookingMoneyPayment, bookingPaymentInfo,sslCommerze,sslCommerzeSuccess,sslCommerzeFail,sslCommerzeCancel,sslCommerzeIpn} = require('../controllers/productPaymentControllers')
 
 //(base/product) url
 router.use('/add',isLoggedIn)
 router.use('/verify',isAllowProductVerify)
 router.use('/order',isLoggedIn)
 router.use('/update',isLoggedIn)
+router.use('/ssl-commerze/payment',isLoggedIn)
 router.use('/payment',isLoggedIn)
 
 
@@ -36,5 +37,11 @@ router.get('/order/orderRequest',viewOrderRequest)
 router.post('/order/accept',acceptOrder)
 
 router.route('/payment/booking').get(bookingPaymentInfo).post(bookingMoneyPayment)
+
+router.get('/ssl-commerze/payment',sslCommerze)
+router.post('/ssl-commerze/success',sslCommerzeSuccess)
+router.post('/ssl-commerze/fail',sslCommerzeFail)
+router.post('/ssl-commerze/cancel',sslCommerzeCancel)
+router.post('/ssl-commerze/ipn',sslCommerzeIpn)
 
 module.exports = router

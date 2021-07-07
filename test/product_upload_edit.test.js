@@ -4,6 +4,8 @@ const request = require('supertest')
 const app = require('../app')
 var expect = chai.expect;
 var token = ""
+var tokenSeller = ""
+var tokenBuyer = ""
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -19,6 +21,19 @@ describe('Product upload api', function () {
         .expect(200)
         .then((res)=>{
             token = res.body.token
+        })
+    })
+
+    it('POST /auth/login --> login of test seller user for token', () => { 
+        return request(app)
+        .post('/auth/login').send({
+            email: process.env.TEST_SELLER_EMAIL,
+            password: process.env.TEST_SELLER_PASSWORD
+        })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then((res)=>{
+            tokenSeller = res.body.token
         })
     })
 
@@ -66,7 +81,7 @@ describe('Product upload api', function () {
         .set("Authorization", "Bearer " + token)
         .send(
             {
-                "productId":"60e3584ea06c012b97571248",
+                "productId":"60e5e749c63d3c3104e9eab2",
                 "isVerified": true,
                 "message": "Thanks for you effort your product islive"
                 
@@ -92,23 +107,23 @@ describe('Product upload api', function () {
         
     })
 
-    it('POST /product/edit --> edit product', () => { 
+    it('POST /product/edit --> edit product not exist', () => { 
         return request(app)
         .put('/product/update?id=60e4ac95e563ae1382a920cd')
         .set("Authorization", "Bearer " + token)
         .expect(400)
         .then((res)=>{
            
-            expect(res.body.message).to.equal("This is not your product")
+            expect(res.body.message).to.equal("Product doesn't exist")
         })
         
     })
     
 
-    it('POST /product/edit --> edit product', () => { 
+    it('POST /product/edit --> edit product succesfull', () => { 
         return request(app)
-        .put('/product/update?id=60e3584ea06c012b97571248')
-        .set("Authorization", "Bearer " + token)
+        .put('/product/update?id=60e5e749c63d3c3104e9eab2')
+        .set("Authorization", "Bearer " + tokenSeller)
         .expect(200)
         .then((res)=>{
             expect(res.body.message).to.equal("Edit Product Succesfull")

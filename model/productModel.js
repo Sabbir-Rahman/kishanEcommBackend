@@ -51,6 +51,9 @@ const productSchema = mongoose.Schema({
     description: requiredString,
     category:isString,
     subCategory:isString,
+    image:isString,
+    image2:isString,
+    image3:isString,
     unitName: requiredString,
     unitPrize: requiredNumber,
     bookingPercentage: isNumber,
@@ -63,6 +66,15 @@ const productSchema = mongoose.Schema({
     upazilla: isString,
     isVerified: requiredBoolean,
     isAvailableNow: requiredBoolean,
+    rating: isNumber,
+    comments: {
+        type: [String],
+        default: [],
+    },
+    question: {
+        type: [String],
+        default: [],
+    },
     timestamp:isString
 
     
