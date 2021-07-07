@@ -12,12 +12,14 @@ const {testView, viewAllProduct} = require('../controllers/productViewController
 
 const {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest}  = require('../controllers/productOrderController')
 
+const {bookingMoneyPayment, bookingPaymentInfo,sslCommerze} = require('../controllers/productPaymentControllers')
 
-
+//(base/product) url
 router.use('/add',isLoggedIn)
 router.use('/verify',isAllowProductVerify)
 router.use('/order',isLoggedIn)
 router.use('/update',isLoggedIn)
+router.use('/payment',isLoggedIn)
 
 
 router.get('/',testView)
@@ -30,4 +32,9 @@ router.get('/view',viewAllProduct)
 
 router.post('/order',orderProduct)
 router.route('/order/buyRequest').get(viewBuyProductRequest).post(acceptOrder)
+router.get('/order/orderRequest',viewOrderRequest)
+router.post('/order/accept',acceptOrder)
+
+router.route('/payment/booking').get(bookingPaymentInfo).post(bookingMoneyPayment)
+
 module.exports = router

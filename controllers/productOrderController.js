@@ -124,23 +124,120 @@ const orderProduct = async(req,res) => {
 
 
 const viewBuyProductRequest = async(req,res)=> {
+
+    req.query.seller_id = req.user.id
+
+    //pass req.query for filter as req.query want
     const sortByTimestampDesc = {'_id': -1}
-    const request = await productBuyRequest.find({
-        "seller_id":req.user.id,
-        "status": "pending"
-    }).sort(sortByTimestampDesc)
+    const request = await productBuyRequest.find(
+        req.query
+    ).sort(sortByTimestampDesc)
 
     return res.status(200).json({ 'message': 'Product order buy request view succesfully','data':request})
 }
 
 const acceptOrder = async(req,res)=>{
 
-    return res.status(200).json({ 'message': 'Product order accepted succesfully'})
+    const { productId } = req.body
+    const requestBuy = await productBuyRequestSchema.findOneAndUpdate(
+        {
+            product_id: productId,
+            seller_id:req.user.id,
+            status: "pending"
+        },
+        {
+            status: "accepted"
+        },
+        {
+            new: true
+        }
+    )
+
+    const requestOrder = await productOrderRequestSchema.findOneAndUpdate(
+        {
+            product_id: productId,
+            seller_id:req.user.id,
+            status: "pending"
+        },
+        {
+            status: "accepted"
+        },
+        {
+            new: true
+        }
+    )
+    if(!requestOrder||!requestBuy){
+        return res.status(400).json({ 'message': 'Product not find for in your buy request'})
+    }
+
+    const product = await productSchema.findById(productId)
+
+    const productUpdate = await productSchema.findOneAndUpdate(
+        {
+            _id: productId,
+        
+        },
+        {
+            available: product.available-requestBuy.buyingQuantity
+        },
+        {
+            new: true
+        }
+    )
+
+  
+
+
+
+    if (req.user.email == 'testadmin@kishan.com') {
+        return res.status(200).json({ 'message': 'Product order accepted succesfully', 'data': 'You are testing datbase product not added' })
+    }
+ 
+
+    //auto adjust the quantity
+
+    
+
+    sellerNotificationMessage = `Your accept request for product id:${requestBuy.product_id} name:${requestBuy.productName} for seller id:${requestBuy.seller_id}.Prev product availability:${product.available} ${requestBuy.buyingQuantityUnit} present availability:${productUpdate.available} ${requestBuy.buyingQuantityUnit}`
+
+    buyerNotificationMessage = `Your order for product id:${requestOrder.product_id} name:${requestOrder.productName} is accepted by sellerId:${requestOrder.seller_id} please pay the booking money:${requestOrder.bookingMoney}`
+
+    const newNotificationSeller = {
+        "user_id": req.user.id,
+        "message": sellerNotificationMessage,
+        "type": "product_buying_request",
+        "timestamp": new Date()
+    }
+
+    const newNotificationBuyer = {
+        "user_id": req.user.id,
+        "message": buyerNotificationMessage,
+        "type": "product_order_request",
+        "timestamp": new Date()
+    }
+
+   
+    
+    const notificationSeller = await new notificationSchema(newNotificationSeller).save()
+    const notificationBuyer = await new notificationSchema(newNotificationBuyer).save()
+
+    
+    return res.status(200).json({ 'message': 'Product order accepted succesfully','dataBuyRequest':requestBuy,'dataOrderRequest':requestOrder,'sellerNotification':notificationSeller,'buyerNotificationMessage':notificationBuyer})
 }
 
 
 const viewOrderRequest = async(req,res)=> {
-    return res.status(200).json({ 'message': 'Product order request view succesfully'})
+
+    req.query.buyer_id = req.user.id
+
+    //pass req.query for filter as req.query want
+    const sortByTimestampDesc = {'_id': -1}
+    const request = await productOrderRequest.find(
+        req.query
+    ).sort(sortByTimestampDesc)
+
+
+    return res.status(200).json({ 'message': 'Product order request view succesfully','data':request})
 }
 
 
