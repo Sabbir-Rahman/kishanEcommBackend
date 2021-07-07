@@ -143,7 +143,7 @@ const acceptOrder = async(req,res)=>{
         {
             product_id: productId,
             seller_id:req.user.id,
-            status: "accepted"
+            status: "pending"
         },
         {
             status: "accepted"
@@ -157,7 +157,7 @@ const acceptOrder = async(req,res)=>{
         {
             product_id: productId,
             seller_id:req.user.id,
-            status: "accepted"
+            status: "pending"
         },
         {
             status: "accepted"
@@ -166,6 +166,9 @@ const acceptOrder = async(req,res)=>{
             new: true
         }
     )
+    if(!requestOrder||!requestBuy){
+        return res.status(400).json({ 'message': 'Product not find for in your buy request'})
+    }
 
     const product = await productSchema.findById(productId)
 
@@ -186,12 +189,10 @@ const acceptOrder = async(req,res)=>{
 
 
 
-    // if (req.user.email == 'testadmin@kishan.com') {
-    //     return res.status(200).json({ 'message': 'Product order accepted succesfully', 'data': 'You are testing datbase product not added' })
-    // }
-    if(!requestOrder||!requestBuy){
-        return res.status(400).json({ 'message': 'Product not find for in your buy request'})
+    if (req.user.email == 'testadmin@kishan.com') {
+        return res.status(200).json({ 'message': 'Product order accepted succesfully', 'data': 'You are testing datbase product not added' })
     }
+ 
 
     //auto adjust the quantity
 
