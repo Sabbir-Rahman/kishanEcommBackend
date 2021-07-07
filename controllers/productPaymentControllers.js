@@ -14,17 +14,26 @@ const notificationSchema = require('../model/notificationModel')
 const dotenv = require('dotenv')
 dotenv.config()
 
-const testView = ((req, res) => {
-    res.json({ 'message': 'View Test succesfull' })
-})
+const bookingPaymentInfo = async(req,res)=> {
+    const {productId} = req.query
 
+    //pass req.query for filter as req.query want
+    const sortByTimestampDesc = {'_id': -1}
+    const request = await productOrderRequest.findOne({
+        "product_id":productId,
+        "buyer_id": req.user.id,
+        "status":"accepted"
+    }).sort(sortByTimestampDesc)
+
+    return res.status(200).json({ 'message': 'Booking money payment view succesfully succesfully','data':request})
+}
 
 const bookingMoneyPayment = async(req,res)=> {
     return res.status(200).json({ 'message': 'Product order booking succesfully'})
 }
 
-const sslCommerze = async(req,res) {
+const sslCommerze = async(req,res) =>{
     return res.status(200).json({ 'message': 'Ssl commerce payment succesfully'})
 }
 
-module.exports = {testView, bookingMoneyPayment, sslCommerze}
+module.exports = {bookingMoneyPayment, bookingPaymentInfo,sslCommerze}

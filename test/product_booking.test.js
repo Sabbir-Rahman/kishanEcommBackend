@@ -21,25 +21,22 @@ describe('Product order api', function () {
         })
     })
 
-    it('GET /product/order/buyRequest --> product buy request view', () => { 
+    it('GET /product/payment/booking --> product booking payment info view', () => { 
         return request(app)
-        .get('/product/order/buyRequest')
+        .get('/product/payment/booking')
         .set("Authorization", "Bearer " + token)
         .expect(200)
         .then((res)=>{
-            expect(res.body.message).to.equal('Product order buy request view succesfully')
-            
-            // if(res.body.data[0]){
-            // expect(res.body.data[0]['status']).to.equal('pending')
-            // }
+            expect(res.body.message).to.equal('Booking money payment view succesfully succesfully')
+           
         })
         
     })
 
 
-    it('POST /product/order --> order product', () => { 
+    it('POST /product/payment/booking --> product order booking payment', () => { 
         return request(app)
-        .post('/product/order')
+        .post('/product/payment/booking')
         .set("Authorization", "Bearer " + token)
         .send(
             {
