@@ -127,10 +127,13 @@ const productVerify = async (req, res) => {
         },
         {
             isVerified:isVerified,
+        },
+        {
+            new: true
         }
     )
     
-    product.isVerified = true
+
     
     const notificationMessage = message
     const newNotificationSeller = {
