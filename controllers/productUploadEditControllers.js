@@ -15,12 +15,15 @@ const test = ((req, res) => {
 
 const addProducts = async (req, res) => {
 
-    const { name, description, unitname, unitPrize, available, minOrder, availableDate, division, district, upazilla, isAvailableNow } = req.body
+    const { name, description,category,subCategory,image, unitname, unitPrize, available, minOrder, availableDate, division, district, upazilla, isAvailableNow } = req.body
 
     const newProduct = {
         "seller_id": req.user.id,
         "name": name,
         "description": description,
+        "category":category,
+        "subCategory":subCategory,
+        "image":image,
         "unitName": unitname,
         "unitPrize": unitPrize,
         "available": available,
