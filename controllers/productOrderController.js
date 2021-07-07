@@ -124,10 +124,14 @@ const orderProduct = async(req,res) => {
 
 
 const viewBuyProductRequest = async(req,res)=> {
+
+    req.query.seller_id = req.user.id
+
+    //pass req.query for filter as req.query want
     const sortByTimestampDesc = {'_id': -1}
-    const request = await productBuyRequest.find({
-        "seller_id":req.user.id,
-    }).sort(sortByTimestampDesc)
+    const request = await productBuyRequest.find(
+        req.query
+    ).sort(sortByTimestampDesc)
 
     return res.status(200).json({ 'message': 'Product order buy request view succesfully','data':request})
 }

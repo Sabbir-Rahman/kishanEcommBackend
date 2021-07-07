@@ -120,9 +120,54 @@ describe('Product order api', function () {
         
     })
 
-    it('GET /product/order/buyRequest --> product buy request view', () => { 
+    it('GET /product/order/buyRequest --> product buy request pending view', () => { 
         return request(app)
-        .get('/product/order/buyRequest')
+        .get('/product/order/buyRequest?status=pending')
+        .set("Authorization", "Bearer " + token)
+        .expect(200)
+        .then((res)=>{
+            expect(res.body.message).to.equal('Product order buy request view succesfully')
+            
+            if(res.body.data[0]){
+            expect(res.body.data[0]['status']).to.equal('pending')
+            }
+        })
+        
+    })
+
+    it('GET /product/order/buyRequest --> product buy request accepted view', () => { 
+        return request(app)
+        .get('/product/order/buyRequest?status=accepetd')
+        .set("Authorization", "Bearer " + token)
+        .expect(200)
+        .then((res)=>{
+            expect(res.body.message).to.equal('Product order buy request view succesfully')
+            
+            if(res.body.data[0]){
+            expect(res.body.data[0]['status']).to.equal('pending')
+            }
+        })
+        
+    })
+
+    it('GET /product/order/buyRequest --> product buy request booked view', () => { 
+        return request(app)
+        .get('/product/order/buyRequest?status=booked')
+        .set("Authorization", "Bearer " + token)
+        .expect(200)
+        .then((res)=>{
+            expect(res.body.message).to.equal('Product order buy request view succesfully')
+            
+            if(res.body.data[0]){
+            expect(res.body.data[0]['status']).to.equal('pending')
+            }
+        })
+        
+    })
+
+    it('GET /product/order/buyRequest --> product buy request paid view', () => { 
+        return request(app)
+        .get('/product/order/buyRequest?status=paid')
         .set("Authorization", "Bearer " + token)
         .expect(200)
         .then((res)=>{
