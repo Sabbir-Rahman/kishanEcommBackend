@@ -6,7 +6,7 @@ var token = ""
 const dotenv = require('dotenv')
 dotenv.config()
 
-describe('Product order api', function () {
+describe('Product payment api', function () {
 
     it('POST /auth/login --> login of test admin user for token', () => { 
         return request(app)
@@ -21,13 +21,15 @@ describe('Product order api', function () {
         })
     })
 
+
+    //this willl return 400 as no product for admin
     it('GET /product/payment/booking --> product booking payment info view', () => { 
         return request(app)
-        .get('/product/payment/booking')
+        .get('/product/payment/booking?product_id=')
         .set("Authorization", "Bearer " + token)
-        .expect(200)
+        .expect(400)
         .then((res)=>{
-            expect(res.body.message).to.equal('Booking money payment view succesfully succesfully')
+            expect(res.body.message).to.equal('Product not found')
            
         })
         

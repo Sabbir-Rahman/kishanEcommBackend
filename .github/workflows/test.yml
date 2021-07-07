@@ -15,7 +15,11 @@ env:
   ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
   REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
   TEST_ADMIN_EMAIL: ${{ secrets.TEST_ADMIN_EMAIL }}
-  TEST_ADMIN_PASSWORD: ${{ secrets.TEST_ADMIN_PASSWORD }}              
+  TEST_ADMIN_PASSWORD: ${{ secrets.TEST_ADMIN_PASSWORD }}
+  TEST_BUYER_EMAIL : ${{ secrets.TEST_BUYER_EMAIL }}
+  TEST_BUYER_PASSWORD : ${{ secrets.TEST_BUYER_PASSWORD }}
+  TEST_SELLER_EMAIL : ${{ secrets.TEST_SELLER_EMAIL }}
+  TEST_SELLER_PASSWORD : ${{ secrets.TEST_SELLER_PASSWORD }}              
 
 jobs:
   build-and-test:

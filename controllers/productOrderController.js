@@ -31,9 +31,9 @@ const orderProduct = async(req,res) => {
 
    
     //bypass logic for admin
-    if(existingProductRequest || req.user.email == 'testadmin@kishan.com'){
+    if(existingProductRequest ){
         console.log('hit')
-        return res.status(400).json({'message':"You have a pending order for the same product"})
+        return res.status(400).json({'message':"You have a pending order for the same product or product not exist"})
     }
 
     const user = await User.findOne({ "_id":req.user.id })
@@ -55,6 +55,9 @@ const orderProduct = async(req,res) => {
 
     if(quantity> product.available){
         return res.status(400).json({'message':"Please order less than available amount"})
+    }
+    if (req.user.email == 'testbuyer@kishan.com'){
+        return res.status(200).json({'message':"Endpoint ok no data added for test buyer"})
     }
 
     if(product.bookingPercentage){
@@ -110,10 +113,6 @@ const orderProduct = async(req,res) => {
         "timestamp": new Date()
     }
 
-    //bypass data for testing not added to real db
-    if (req.user.email == 'testadmin@kishan.com') {
-        return res.json({ 'message': 'Add Product Succesfull', 'data': 'You are testing datbase product not added' })
-    }
 
     const newBuyRequest = await new productBuyRequestSchema(buyRequest).save()
     const newOrderRequest = await new productOrderRequestSchema(orderRequest).save()
@@ -141,6 +140,8 @@ const viewBuyProductRequest = async(req,res)=> {
 const acceptOrder = async(req,res)=>{
 
     const { productId } = req.body
+
+    
     const requestBuy = await productBuyRequestSchema.findOneAndUpdate(
         {
             product_id: productId,
@@ -191,10 +192,6 @@ const acceptOrder = async(req,res)=>{
 
 
 
-    if (req.user.email == 'testadmin@kishan.com') {
-        return res.status(200).json({ 'message': 'Product order accepted succesfully', 'data': 'You are testing datbase product not added' })
-    }
- 
 
     //auto adjust the quantity
 
