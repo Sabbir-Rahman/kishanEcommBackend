@@ -106,7 +106,59 @@ const sslCommerze = async(req,res,next)=>{
 }
 
 const sslCommerzeSuccess = async(req,res,next)=>{
-    return res.status(200).json({ 'message': 'Ssl commerce payment succesfully','data':req.body})
+    const { productId } = req.body.value_a
+    const requestBuy = await productBuyRequestSchema.findOneAndUpdate(
+        {
+            product_id: productId,
+            buyer_id:req.body.value_b,
+            status: "accepted"
+        },
+        {
+            status: "booked"
+        },
+        {
+            new: true
+        }
+    )
+
+    const requestOrder = await productOrderRequestSchema.findOneAndUpdate(
+        {
+            product_id: productId,
+            seller_id:req.body.value_c,
+            status: "accepted"
+        },
+        {
+            status: "booked"
+        },
+        {
+            new: true
+        }
+    )
+
+    sellerNotificationMessage = `Booking money${req.body.amount} of your product id:${req.body.value_a} is paid by buyer_id:${req.body.value_b}`
+
+    buyerNotificationMessage = `Booking money${req.body.amount} is paid for product id:${req.body.value_a} seller_id:${req.body.value_c}`
+
+    const newNotificationSeller = {
+        "user_id": req.body.value_c,
+        "message": sellerNotificationMessage,
+        "type": "product_booking_payment",
+        "timestamp": new Date()
+    }
+
+    const newNotificationBuyer = {
+        "user_id": req.body.value_b,
+        "message": buyerNotificationMessage,
+        "type": "product_booking_payment",
+        "timestamp": new Date()
+    }
+
+   
+    
+    const notificationSeller = await new notificationSchema(newNotificationSeller).save()
+    const notificationBuyer = await new notificationSchema(newNotificationBuyer).save()
+
+    return res.status(200).json({ 'message': 'Ssl commerce payment succesfully','dataBuyRequest':requestBuy,'dataOrderRequest':requestOrder,'sellerNotification':notificationSeller,'buyerNotificationMessage':notificationBuyer,'sslcommerzdata':req.body})
 }
 
 const sslCommerzeFail = async(req,res,next)=>{
