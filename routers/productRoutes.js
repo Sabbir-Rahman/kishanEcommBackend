@@ -30,5 +30,6 @@ router.get('/view',viewAllProduct)
 
 router.post('/order',orderProduct)
 router.route('/order/buyRequest').get(viewBuyProductRequest).post(acceptOrder)
+router.get('/order/orderRequest',viewOrderRequest)
 router.post('/order/accept',acceptOrder)
 module.exports = router

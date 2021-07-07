@@ -226,7 +226,17 @@ const acceptOrder = async(req,res)=>{
 
 
 const viewOrderRequest = async(req,res)=> {
-    return res.status(200).json({ 'message': 'Product order request view succesfully'})
+
+    req.query.buyer_id = req.user.id
+
+    //pass req.query for filter as req.query want
+    const sortByTimestampDesc = {'_id': -1}
+    const request = await productOrderRequest.find(
+        req.query
+    ).sort(sortByTimestampDesc)
+
+
+    return res.status(200).json({ 'message': 'Product order request view succesfully','data':request})
 }
 
 
