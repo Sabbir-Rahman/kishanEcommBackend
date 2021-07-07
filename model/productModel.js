@@ -51,6 +51,7 @@ const productSchema = mongoose.Schema({
     description: requiredString,
     category:isString,
     subCategory:isString,
+    image:isString,
     unitName: requiredString,
     unitPrize: requiredNumber,
     bookingPercentage: isNumber,

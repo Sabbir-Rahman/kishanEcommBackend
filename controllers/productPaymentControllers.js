@@ -26,6 +26,10 @@ const bookingPaymentInfo = async(req,res)=> {
         "status":"accepted"
     }).sort(sortByTimestampDesc)
 
+    if(!request){
+        return res.status(400).json({ 'message': 'Product not found'})
+    }
+
     return res.status(200).json({ 'message': 'Booking money payment view succesfully succesfully','data':request})
 }
 
