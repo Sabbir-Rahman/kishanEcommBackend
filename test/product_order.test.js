@@ -153,7 +153,7 @@ describe('Product order api', function () {
         
     })
 
-    it('POST /product/order --> product not exist', () => { 
+    it('POST /product/order --> product not exist in buy request', () => { 
         return request(app)
         .post('/product/order/accept')
         .set("Authorization", "Bearer " + token)
