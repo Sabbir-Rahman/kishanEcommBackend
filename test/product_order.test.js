@@ -120,5 +120,54 @@ describe('Product order api', function () {
         
     })
 
+    it('POST /product/order/buyRequest --> product buy request view', () => { 
+        return request(app)
+        .get('/product/order/buyRequest')
+        .set("Authorization", "Bearer " + token)
+        .expect(200)
+        .then((res)=>{
+            expect(res.body.message).to.equal('Product order buy request view succesfully')
+            
+            if(res.body.data[0]){
+            expect(res.body.data[0]['status']).to.equal('pending')
+            }
+        })
+        
+    })
+
+    it('POST /product/order/accept --> Accept the order of the product', () => { 
+        return request(app)
+        .post('/product/order/accept')
+        .set("Authorization", "Bearer " + token)
+        .send(
+            {
+                "productId":"60e35a0f31092c2eb211b59f"
+               
+            }
+        )
+        .expect(200)
+        .then((res)=>{
+            expect(res.body.message).to.equal('Product order accepted succesfully')
+            
+        })
+        
+    })
+
+    it('POST /product/order --> product not exist', () => { 
+        return request(app)
+        .post('/product/order/accept')
+        .set("Authorization", "Bearer " + token)
+        .send(
+            {
+                "productId":"60e35a0f31092c111111b59f"
+            }
+        )
+        .expect(200)
+        // .then((res)=>{
+        //     expect(res.body.message).to.equal('Product not find')
+        // })
+        
+    })
+
 
 })

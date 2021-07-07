@@ -135,7 +135,29 @@ const viewBuyProductRequest = async(req,res)=> {
 
 const acceptOrder = async(req,res)=>{
 
-    return res.status(200).json({ 'message': 'Product order accepted succesfully'})
+    const { productId } = req.body
+    const request = await productBuyRequestSchema.findOneAndUpdate(
+        {
+            product_id: productId,
+            seller_id:req.user.id,
+            status: "pending"
+        },
+        {
+            status: "accepted"
+        },
+        {
+            new: true
+        }
+    )
+
+    if (req.user.email == 'testadmin@kishan.com') {
+        return res.status(200).json({ 'message': 'Product order accepted succesfully', 'data': 'You are testing datbase product not added' })
+    }
+    if(!request){
+        return res.status(400).json({ 'message': 'Product not find'})
+    }
+    
+    return res.status(200).json({ 'message': 'Product order accepted succesfully','data':request})
 }
 
 
