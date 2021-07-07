@@ -20,6 +20,7 @@ router.use('/verify',isAllowProductVerify)
 router.use('/order',isLoggedIn)
 router.use('/update',isLoggedIn)
 router.use('/ssl-commerze/payment',isLoggedIn)
+router.use('/payment',isLoggedIn)
 
 
 router.get('/',testView)

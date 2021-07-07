@@ -23,14 +23,16 @@ const orderProduct = async(req,res) => {
 
     const product =  await productSchema.findOne({ "_id":productId });
     
-    const existingProductRequest = await productBuyRequest.find({
+    const existingProductRequest = await productBuyRequest.findOne({
         "product_id": productId,
         "buyer_id": req.user.id,
         "status":"pending"
     })
 
+   
     //bypass logic for admin
-    if(existingProductRequest && req.user.email != 'testadmin@kishan.com'){
+    if(existingProductRequest || req.user.email == 'testadmin@kishan.com'){
+        console.log('hit')
         return res.status(400).json({'message':"You have a pending order for the same product"})
     }
 

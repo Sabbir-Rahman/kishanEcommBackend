@@ -18,13 +18,12 @@ dotenv.config()
 const bookingPaymentInfo = async(req,res)=> {
     const {productId} = req.query
 
-    //pass req.query for filter as req.query want
-    const sortByTimestampDesc = {'_id': -1}
+
     const request = await productOrderRequest.findOne({
         "product_id":productId,
         "buyer_id": req.user.id,
         "status":"accepted"
-    }).sort(sortByTimestampDesc)
+    })
 
     if(!request){
         return res.status(400).json({ 'message': 'Product not found'})
@@ -110,7 +109,9 @@ const sslCommerze = async(req,res,next)=>{
 }
 
 const sslCommerzeSuccess = async(req,res,next)=>{
-    const { productId } = req.body.value_a
+    const productId = req.body.value_a
+
+    console.log(productId)
     const requestBuy = await productBuyRequestSchema.findOneAndUpdate(
         {
             product_id: productId,
@@ -138,6 +139,9 @@ const sslCommerzeSuccess = async(req,res,next)=>{
             new: true
         }
     )
+
+    console.log(requestBuy)
+    console.log(requestOrder)
 
     sellerNotificationMessage = `Booking money${req.body.amount} of your product id:${req.body.value_a} is paid by buyer_id:${req.body.value_b}`
 
