@@ -3,6 +3,7 @@ const app = express()
 const authRoutes = require('./routers/authRoutes')
 const roleRoutes = require('./routers/roleRoutes')
 const productUploadRoutes = require('./routers/productRoutes')
+const notificationRoutes = require('./routers/notificationRoutes')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 var cors = require('cors')
@@ -30,7 +31,7 @@ app.get('/',(req,res)=> {
 app.use('/auth',authRoutes)
 app.use('/role',roleRoutes)
 app.use('/product',productUploadRoutes)
-
+app.use('/notification',notificationRoutes)
 
 
 const connectDB = async () => {
