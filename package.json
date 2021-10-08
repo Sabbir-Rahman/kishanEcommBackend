@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon app.js",
     "test": "mocha --timeout 60000 ./test/* --exit",
-    "start": "node app.js"
+    "start": "node app.js",
+    "coverage": "nyc --reporter=lcov --reporter=text npm run test"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "mocha": "^9.0.2",
+    "nyc": "^15.1.0",
     "supertest": "^6.1.3"
   }
 }
