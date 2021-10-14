@@ -11,6 +11,11 @@ const requiredDate = {
     required: true
 }
 
+const isDate = {
+    type: Date,
+    
+}
+
 const isString = {
     type: String
     
@@ -43,6 +48,42 @@ const requiredBoolean = {
     required: true
 }
 
+const replyComment = {
+    'id': Number,
+    'userId': String,
+    'comments': String,
+    'isVisible': Boolean,
+    timestamp: {
+        type: Date,
+        default: new Date(),
+    }
+}
+
+const comment = {
+    'id': Number,
+    'userId': String,
+    'comments': String,
+    'isVisible': Boolean,
+    'replyComment': [replyComment],
+    timestamp: {
+        type: Date,
+        default: new Date(),
+    }
+}
+
+const questionAnswer = {
+    'id': Number,
+    'questionUserId': String,
+    'question': String,
+    'answer': String,
+    'isVisible': Boolean,
+    'priorityIndex': Number,
+    timestamp: {
+        type: Date,
+        default: new Date(),
+    }
+}
+
 
 
 const productSchema = mongoose.Schema({
@@ -54,6 +95,7 @@ const productSchema = mongoose.Schema({
     image:isString,
     image2:isString,
     image3:isString,
+    video: isString,
     unitName: requiredString,
     unitPrize: requiredNumber,
     bookingPercentage: isNumber,
@@ -61,21 +103,24 @@ const productSchema = mongoose.Schema({
     minOrder: isNumberDefaultZero,
     rating: isNumber,
     availableDate: requiredDate,
+    expireDate : isDate,
     division: requiredString,
     district: requiredString,
     upazilla: isString,
     isVerified: requiredBoolean,
     isAvailableNow: requiredBoolean,
-    rating: isNumber,
     comments: {
-        type: [String],
+        type: [comment],
         default: [],
     },
-    question: {
-        type: [String],
+    questionAns: {
+        type: [questionAnswer],
         default: [],
     },
-    timestamp:isString
+    timestamp: {
+        type: Date,
+        default: new Date(),
+    }
 
     
 })
