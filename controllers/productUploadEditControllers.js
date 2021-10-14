@@ -46,6 +46,13 @@ const addProducts = async (req, res) => {
         return res.json({ 'message': 'Add Product Succesfull', 'data': 'You are testing datbase product not added' }).status(201)
     }
 
+    //stop the user if avaiable date is longer and isAvailable true
+    todayDate = new Date()
+    availDate = new Date(newProduct.availableDate)
+    if ( availDate.getTime() > todayDate.getTime() && newProduct.isAvailableNow == true) {
+        return res.json({ 'message': 'Product not added', 'data': 'You cannot on the availability with future available date' }).status(201)
+    }
+
     const result = await new productSchema(newProduct).save()
 
     const notificationMessage = `Seller id:${req.user.id} added product id:${result._id} for verification`
