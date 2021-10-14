@@ -16,15 +16,21 @@ const testView = ((req, res) => {
 const viewAllProduct = async(req,res) => {
 
     req.query.isVerified = true
-    
 
-   
+    const limit = req.body.limit
+  
+    const page = req.body.page
+
+    
     //pass req.query for filter as req.query want
     
+    
     const sortByTimestampDesc = {'_id': -1}
-    const products = await product.find(
+    let products =  await product.find(
         req.query
     ).sort(sortByTimestampDesc)
+    .limit(limit*1).skip((page-1)*limit)
+    
     
     res.json({ 'message': 'View Product by anyone Succesfull', 'data': products })
 }
