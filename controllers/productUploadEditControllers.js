@@ -32,6 +32,7 @@ const addProducts = async (req, res) => {
         "bookingPercentage": bookingPercentage,
         "available": available,
         "minOrder": minOrder,
+        "rating": 0,
         "availableDate": availableDate,
         "expireDate": expireDate,
         "division": division,

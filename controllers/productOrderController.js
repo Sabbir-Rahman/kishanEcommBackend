@@ -156,7 +156,7 @@ const acceptOrder = async(req,res)=>{
         }
     )
 
-    const requestOrder = await productOrderRequestSchema.findOneAndUpdate(
+const requestOrder = await productOrderRequestSchema.findOneAndUpdate(
         {
             product_id: productId,
             seller_id:req.user.id,
@@ -175,6 +175,8 @@ const acceptOrder = async(req,res)=>{
 
     const product = await productSchema.findById(productId)
 
+
+    //auto adjust the quantity
     const productUpdate = await productSchema.findOneAndUpdate(
         {
             _id: productId,
@@ -186,16 +188,7 @@ const acceptOrder = async(req,res)=>{
         {
             new: true
         }
-    )
-
-  
-
-
-
-
-    //auto adjust the quantity
-
-    
+    )    
 
     sellerNotificationMessage = `Your accept request for product id:${requestBuy.product_id} name:${requestBuy.productName} for seller id:${requestBuy.seller_id}.Prev product availability:${product.available} ${requestBuy.buyingQuantityUnit} present availability:${productUpdate.available} ${requestBuy.buyingQuantityUnit}`
 
