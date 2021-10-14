@@ -75,24 +75,24 @@ describe('Product upload api', function () {
         
     })
 
-    it('POST /product/verify --> verify product of admin', () => { 
-        return request(app)
-        .post('/product/verify')
-        .set("Authorization", "Bearer " + token)
-        .send(
-            {
-                "productId":"60e5e749c63d3c3104e9eab2",
-                "isVerified": true,
-                "message": "Thanks for you effort your product islive"
+    // it('POST /product/verify --> verify product of admin', () => { 
+    //     return request(app)
+    //     .post('/product/verify')
+    //     .set("Authorization", "Bearer " + token)
+    //     .send(
+    //         {
+    //             "productId":"60e5e749c63d3c3104e9eab2",
+    //             "isVerified": true,
+    //             "message": "Thanks for you effort your product islive"
                 
-            }
-        )
-        .expect(200)
-        .then((res)=>{
-            expect(res.body.message).to.equal('Verify Product Succesfull')
-        })
+    //         }
+    //     )
+    //     .expect(200)
+    //     .then((res)=>{
+    //         expect(res.body.message).to.equal('Verify Product Succesfull')
+    //     })
         
-    })
+    // })
 
 
     it('POST /product/edit --> edit product', () => { 
@@ -120,16 +120,16 @@ describe('Product upload api', function () {
     })
     
 
-    it('POST /product/edit --> edit product succesfull', () => { 
-        return request(app)
-        .put('/product/update?id=60e5e749c63d3c3104e9eab2')
-        .set("Authorization", "Bearer " + tokenSeller)
-        .expect(200)
-        .then((res)=>{
-            expect(res.body.message).to.equal("Edit Product Succesfull")
-        })
+    // it('POST /product/edit --> edit product succesfull', () => { 
+    //     return request(app)
+    //     .put('/product/update?id=60e5e749c63d3c3104e9eab2')
+    //     .set("Authorization", "Bearer " + tokenSeller)
+    //     .expect(200)
+    //     .then((res)=>{
+    //         expect(res.body.message).to.equal("Edit Product Succesfull")
+    //     })
         
-    })
+    // })
 
     
 
