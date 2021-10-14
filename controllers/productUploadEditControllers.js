@@ -15,7 +15,7 @@ const test = ((req, res) => {
 
 const addProducts = async (req, res) => {
 
-    const { name, description,category,subCategory,image, unitname, unitPrize, available, minOrder, availableDate, division, district, upazilla, isAvailableNow } = req.body
+    const { name, description,category,subCategory,image,image2,image3,video,unitname, unitPrize,bookingPercentage, available, minOrder, availableDate,expireDate, division, district, upazilla, isAvailableNow } = req.body
 
     const newProduct = {
         "seller_id": req.user.id,
@@ -24,17 +24,21 @@ const addProducts = async (req, res) => {
         "category":category,
         "subCategory":subCategory,
         "image":image,
+        "image2":image2,
+        "image3":image3,
+        "video":video,
         "unitName": unitname,
         "unitPrize": unitPrize,
+        "bookingPercentage": bookingPercentage,
         "available": available,
         "minOrder": minOrder,
         "availableDate": availableDate,
+        "expireDate": expireDate,
         "division": division,
         "district": district,
         "upazilla": upazilla,
         "isVerified": false,
-        "isAvailableNow": false,
-        "timestamp": new Date()
+        "isAvailableNow": isAvailableNow
     }
 
     //bypass data for testing not added to real db
