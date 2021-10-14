@@ -48,41 +48,7 @@ const requiredBoolean = {
     required: true
 }
 
-const replyComment = {
-    'id': Number,
-    'userId': String,
-    'comments': String,
-    'isVisible': Boolean,
-    timestamp: {
-        type: Date,
-        default: new Date(),
-    }
-}
 
-const comment = {
-    'id': Number,
-    'userId': String,
-    'comments': String,
-    'isVisible': Boolean,
-    'replyComment': [replyComment],
-    timestamp: {
-        type: Date,
-        default: new Date(),
-    }
-}
-
-const questionAnswer = {
-    'id': Number,
-    'questionUserId': String,
-    'question': String,
-    'answer': String,
-    'isVisible': Boolean,
-    'priorityIndex': Number,
-    timestamp: {
-        type: Date,
-        default: new Date(),
-    }
-}
 
 
 
@@ -109,17 +75,9 @@ const productSchema = mongoose.Schema({
     upazilla: isString,
     isVerified: requiredBoolean,
     isAvailableNow: requiredBoolean,
-    comments: {
-        type: [comment],
-        default: [],
-    },
-    questionAns: {
-        type: [questionAnswer],
-        default: [],
-    },
     timestamp: {
         type: Date,
-        default: new Date(),
+        default: Date.now
     }
 
     

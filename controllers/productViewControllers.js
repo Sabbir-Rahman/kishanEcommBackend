@@ -16,6 +16,7 @@ const testView = ((req, res) => {
 const viewAllProduct = async(req,res) => {
 
     req.query.isVerified = true
+    
 
    
     //pass req.query for filter as req.query want
