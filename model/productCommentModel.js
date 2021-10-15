@@ -1,4 +1,10 @@
 
+const requiredUniqueString = {
+    type: String,
+    required: true,
+    unique: true
+}
+
 const replyComment = {
     'id': Number,
     'userId': String,
@@ -11,11 +17,13 @@ const replyComment = {
 }
 
 const comment = {
-    'id': Number,
     'userId': String,
     'comments': String,
     'isVisible': Boolean,
-    'replyComment': [replyComment],
+    'replyComment': {
+        type: [replyComment],
+        default: [],
+    },
     timestamp: {
         type: Date,
         default: Date.now,
@@ -23,7 +31,7 @@ const comment = {
 }
 
 const commentSchema = mongoose.Schema({
-    productId: String,
+    productId: requiredUniqueString,
     comments: {
         type: [comment],
         default: [],
