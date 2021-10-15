@@ -156,7 +156,7 @@ const acceptOrder = async(req,res)=>{
         }
     )
 
-const requestOrder = await productOrderRequestSchema.findOneAndUpdate(
+    const requestOrder = await productOrderRequestSchema.findOneAndUpdate(
         {
             product_id: productId,
             seller_id:req.user.id,
@@ -233,5 +233,72 @@ const viewOrderRequest = async(req,res)=> {
 }
 
 
+//change status to full payment by seller if buyer pay the full money
+const orderPaymentConfirm = async(req,res)=>{
 
-module.exports = {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest}
+    const { productId } = req.body
+
+    
+    const requestBuy = await productBuyRequestSchema.findOneAndUpdate(
+        {
+            product_id: productId,
+            seller_id:req.user.id,
+            status: "booked"
+        },
+        {
+            status: "paid"
+        },
+        {
+            new: true
+        }
+    )
+
+    const requestOrder = await productOrderRequestSchema.findOneAndUpdate(
+        {
+            product_id: productId,
+            seller_id:req.user.id,
+            status: "booked"
+        },
+        {
+            status: "paid"
+        },
+        {
+            new: true
+        }
+    )
+    if(!requestOrder||!requestBuy){
+        return res.status(400).json({ 'message': 'Product not find for in your buy request'})
+    }
+
+
+    sellerNotificationMessage = `You confirm payment for product id:${requestBuy.product_id} name:${requestBuy.productName}`
+
+    buyerNotificationMessage = `Your payment for product id:${requestOrder.product_id} name:${requestOrder.productName} is confirmed by sellerId:${requestOrder.seller_id} please change the status to done when you receive the product`
+
+    const newNotificationSeller = {
+        "user_id": req.user.id,
+        "message": sellerNotificationMessage,
+        "type": "product_buying_request",
+        "timestamp": new Date()
+    }
+
+    const newNotificationBuyer = {
+        "user_id": req.user.id,
+        "message": buyerNotificationMessage,
+        "type": "product_order_request",
+        "timestamp": new Date()
+    }
+
+   
+    
+    const notificationSeller = await new notificationSchema(newNotificationSeller).save()
+    const notificationBuyer = await new notificationSchema(newNotificationBuyer).save()
+
+    
+    return res.status(200).json({ 'message': 'Product order payment confirmed succesfully','dataBuyRequest':requestBuy,'dataOrderRequest':requestOrder,'sellerNotification':notificationSeller,'buyerNotificationMessage':notificationBuyer})
+}
+
+
+
+
+module.exports = {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest,orderPaymentConfirm}
