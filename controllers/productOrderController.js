@@ -23,17 +23,29 @@ const orderProduct = async(req,res) => {
 
     const product =  await productSchema.findOne({ "_id":productId });
     
-    const existingProductRequest = await productBuyRequest.findOne({
+    const existingPendingProductRequest = await productBuyRequest.findOne({
         "product_id": productId,
         "buyer_id": req.user.id,
         "status":"pending"
     })
 
+    const existingAcceptedProductRequest = await productBuyRequest.findOne({
+        "product_id": productId,
+        "buyer_id": req.user.id,
+        "status":"accepted"
+    })
+
+    // const existingBookedProductRequest = await productBuyRequest.findOne({
+    //     "product_id": productId,
+    //     "buyer_id": req.user.id,
+    //     "status":"booked"
+    // })
+
    
     //bypass logic for admin
-    if(existingProductRequest ){
+    if(existingPendingProductRequest || existingAcceptedProductRequest ){
         console.log('hit')
-        return res.status(400).json({'message':"You have a pending order for the same product or product not exist"})
+        return res.status(400).json({'message':"You have a not paid order for the same product please complete it first"})
     }
 
     const user = await User.findOne({ "_id":req.user.id })

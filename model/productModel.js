@@ -31,6 +31,12 @@ const isNumberDefaultZero = {
     default:0
     
 }
+
+const maxOrder = {
+    type: Number,
+    default:999999
+    
+}
 const requiredNumber = {
     type: Number,
     required: true
@@ -67,6 +73,7 @@ const productSchema = mongoose.Schema({
     bookingPercentage: isNumber,
     available: requiredNumber,
     minOrder: isNumberDefaultZero,
+    maxOrder: maxOrder,
     rating: isNumber,
     ratingCount: isNumberDefaultZero,
     availableDate: requiredDate,
