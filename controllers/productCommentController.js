@@ -22,9 +22,11 @@ const commentProduct  = async (req,res) => {
     //req.user.id
     const { productId,comment} = req.body
     const commentExist = await commentSchema.findOne({ "productId":productId })
+    const product = await productSchema.findById(productId)
+
     
     if(commentExist){
-        console.log(commentExist.productId)
+        
         
         const singleComment = {
             'userId': req.user.id,
@@ -37,9 +39,16 @@ const commentProduct  = async (req,res) => {
 
         const updatedComment = await commentSchema.findByIdAndUpdate(commentExist._id, commentExist, { new: true})
 
-        console.log(updatedComment)
+        const newNotificationSeller = {
+            "user_id": product.seller_id,
+            "message": `userid:${req.user.id} Name:${req.user.fullname} commented on your productId: ${productId}`,
+            "type": "product_comment",
+            "timestamp": new Date()
+        }
+        const notificationSeller = await new notificationSchema(newNotificationSeller).save()
 
-        //const commentSave = new commentSchema(newComment).save()
+        return res.status(200).json({ 'message': 'Product comment done succesfully','comment': updatedComment})
+        
     }else {
         const singleComment = {
             'userId': req.user.id,
@@ -55,18 +64,24 @@ const commentProduct  = async (req,res) => {
         }
         const commentSave = new commentSchema(newComment).save()
 
-        console.log('commentSave')
+        return res.status(200).json({ 'message': 'Product comment done succesfully','comment': commentSave})
     }
     
 
+}
 
-    // const comment = {
-    //     productId: productId,
-    //     comments : {
 
-    //     }
-    // }
+const viewCommentsProduct = async (req,res) => {
+
+    const {productId} = req.query
+    const comments = await commentSchema.findOne({ "productId":productId })
+    if(comments){
+        console.log(comments.comments.length)
+        return res.status(200).json({ 'message': 'Comment fetch succesfylly','comments': comments,'count':comments.comments.length})
+    } else {
+        return res.status(200).json({ 'message': 'This product has no comment yet'})
+    }
 
 }
 
-module.exports = {commentProduct}
+module.exports = {commentProduct, viewCommentsProduct}
