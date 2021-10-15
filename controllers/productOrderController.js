@@ -35,15 +35,15 @@ const orderProduct = async(req,res) => {
         "status":"accepted"
     })
 
-    const existingBookedProductRequest = await productBuyRequest.findOne({
-        "product_id": productId,
-        "buyer_id": req.user.id,
-        "status":"booked"
-    })
+    // const existingBookedProductRequest = await productBuyRequest.findOne({
+    //     "product_id": productId,
+    //     "buyer_id": req.user.id,
+    //     "status":"booked"
+    // })
 
    
     //bypass logic for admin
-    if(existingPendingProductRequest || existingAcceptedProductRequest||existingBookedProductRequest ){
+    if(existingPendingProductRequest || existingAcceptedProductRequest ){
         console.log('hit')
         return res.status(400).json({'message':"You have a not paid order for the same product please complete it first"})
     }
