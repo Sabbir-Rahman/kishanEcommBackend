@@ -22,11 +22,12 @@ const commentProduct  = async(req,res) => {
     //req.user.id
     const { productId,comment} = req.body
     const comment = await commentSchema.findOne({ "_id":productId })
-    const comment = {
-        productId: productId,
-        comments : {
+    console.log(comment)
+    // const comment = {
+    //     productId: productId,
+    //     comments : {
 
-        }
-    }
+    //     }
+    // }
 
 }
