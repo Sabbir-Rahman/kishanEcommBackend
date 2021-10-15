@@ -10,7 +10,7 @@ const {test,addProducts,editProducts,productVerify,productViewAdmin} = require('
 
 const {testView, viewAllProduct} = require('../controllers/productViewControllers')
 
-const {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest}  = require('../controllers/productOrderController')
+const {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest,orderPaymentConfirm}  = require('../controllers/productOrderController')
 
 const {bookingMoneyPayment, bookingPaymentInfo,sslCommerze,sslCommerzeSuccess,sslCommerzeFail,sslCommerzeCancel,sslCommerzeIpn} = require('../controllers/productPaymentControllers')
 
@@ -35,6 +35,7 @@ router.post('/order',orderProduct)
 router.route('/order/buyRequest').get(viewBuyProductRequest).post(acceptOrder)
 router.get('/order/orderRequest',viewOrderRequest)
 router.post('/order/accept',acceptOrder)
+router.post('/order/paid',orderPaymentConfirm)
 
 router.route('/payment/booking').get(bookingPaymentInfo).post(bookingMoneyPayment)
 
