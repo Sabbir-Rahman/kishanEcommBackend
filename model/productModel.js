@@ -68,6 +68,7 @@ const productSchema = mongoose.Schema({
     available: requiredNumber,
     minOrder: isNumberDefaultZero,
     rating: isNumber,
+    ratingCount: isNumberDefaultZero,
     availableDate: requiredDate,
     expireDate : isDate,
     division: requiredString,

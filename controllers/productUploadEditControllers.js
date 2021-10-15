@@ -33,6 +33,7 @@ const addProducts = async (req, res) => {
         "available": available,
         "minOrder": minOrder,
         "rating": 0,
+        "ratingCount":0,
         "availableDate": availableDate,
         "expireDate": expireDate,
         "division": division,
