@@ -298,7 +298,72 @@ const orderPaymentConfirm = async(req,res)=>{
     return res.status(200).json({ 'message': 'Product order payment confirmed succesfully','dataBuyRequest':requestBuy,'dataOrderRequest':requestOrder,'sellerNotification':notificationSeller,'buyerNotificationMessage':notificationBuyer})
 }
 
+//change status to complete by buyer if seller already confirm the payment
+const orderComplete = async(req,res)=>{
+
+    const { productId } = req.body
+
+    
+    const requestBuy = await productBuyRequestSchema.findOneAndUpdate(
+        {
+            product_id: productId,
+            buyer_id:req.user.id,
+            status: "paid"
+        },
+        {
+            status: "complete"
+        },
+        {
+            new: true
+        }
+    )
+
+    const requestOrder = await productOrderRequestSchema.findOneAndUpdate(
+        {
+            product_id: productId,
+            buyer_id:req.user.id,
+            status: "paid"
+        },
+        {
+            status: "complete"
+        },
+        {
+            new: true
+        }
+    )
+    if(!requestOrder||!requestBuy){
+        return res.status(400).json({ 'message': 'Product not find for in your buy request'})
+    }
+
+
+    sellerNotificationMessage = `Order completement for your product id:${requestBuy.product_id} name:${requestBuy.productName} by buyer:${requestBuy.buyer_id}. Thanks for being with kishan`
+
+    buyerNotificationMessage = `You confirm order completement for product id:${requestOrder.product_id} name:${requestOrder.productName} sellerId:${requestOrder.seller_id}.You can give rating to this product now. Thanks for being with kishan`
+
+    const newNotificationSeller = {
+        "user_id": req.user.id,
+        "message": sellerNotificationMessage,
+        "type": "product_buying_request",
+        "timestamp": new Date()
+    }
+
+    const newNotificationBuyer = {
+        "user_id": req.user.id,
+        "message": buyerNotificationMessage,
+        "type": "product_order_request",
+        "timestamp": new Date()
+    }
+
+   
+    
+    const notificationSeller = await new notificationSchema(newNotificationSeller).save()
+    const notificationBuyer = await new notificationSchema(newNotificationBuyer).save()
+
+    
+    return res.status(200).json({ 'message': 'Product order complete confirmed succesfully. Please give the rating','dataBuyRequest':requestBuy,'dataOrderRequest':requestOrder,'sellerNotification':notificationSeller,'buyerNotificationMessage':notificationBuyer})
+}
 
 
 
-module.exports = {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest,orderPaymentConfirm}
+
+module.exports = {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest,orderPaymentConfirm, orderComplete}
