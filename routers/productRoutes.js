@@ -15,6 +15,8 @@ const {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest,orderPaym
 const {bookingMoneyPayment, bookingPaymentInfo,sslCommerze,sslCommerzeSuccess,sslCommerzeFail,sslCommerzeCancel,sslCommerzeIpn} = require('../controllers/productPaymentControllers')
 const { ratingProduct } = require('../controllers/productQualityController')
 
+const { commentProduct } = require('../controllers/productCommentController')
+
 //(base/product) url
 router.use('/add',isLoggedIn)
 router.use('/verify',isAllowProductVerify)
@@ -22,6 +24,7 @@ router.use('/order',isLoggedIn)
 router.use('/update',isLoggedIn)
 router.use('/ssl-commerze/payment',isLoggedIn)
 router.use('/payment',isLoggedIn)
+router.use('/comment',isLoggedIn)
 
 
 router.get('/',testView)
@@ -31,6 +34,9 @@ router.put('/update',editProducts)
 router.route('/verify').get(productViewAdmin).post(productVerify)
 
 router.get('/view',viewAllProduct)
+
+//product comment
+router.post('/comment',commentProduct)
 
 router.post('/order',orderProduct)
 router.route('/order/buyRequest').get(viewBuyProductRequest).post(acceptOrder)

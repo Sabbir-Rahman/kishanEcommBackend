@@ -18,11 +18,48 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 //any login user can comment on the product
-const commentProduct  = async(req,res) => {
+const commentProduct  = async (req,res) => {
     //req.user.id
     const { productId,comment} = req.body
-    const comment = await commentSchema.findOne({ "_id":productId })
-    console.log(comment)
+    const commentExist = await commentSchema.findOne({ "productId":productId })
+    
+    if(commentExist){
+        console.log(commentExist.productId)
+        
+        const singleComment = {
+            'userId': req.user.id,
+            'comments': comment,
+            'isVisible': true,
+            'replyComment': []
+
+        }
+        commentExist.comments.push(singleComment)
+
+        const updatedComment = await commentSchema.findByIdAndUpdate(commentExist._id, commentExist, { new: true})
+
+        console.log(updatedComment)
+
+        //const commentSave = new commentSchema(newComment).save()
+    }else {
+        const singleComment = {
+            'userId': req.user.id,
+            'comments': comment,
+            'isVisible': true,
+            'replyComment': []
+
+        }
+        const newComment = {
+            productId:productId,
+            comments: [singleComment]
+
+        }
+        const commentSave = new commentSchema(newComment).save()
+
+        console.log('commentSave')
+    }
+    
+
+
     // const comment = {
     //     productId: productId,
     //     comments : {
@@ -31,3 +68,5 @@ const commentProduct  = async(req,res) => {
     // }
 
 }
+
+module.exports = {commentProduct}
