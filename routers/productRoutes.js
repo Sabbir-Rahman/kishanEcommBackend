@@ -13,6 +13,7 @@ const {testView, viewAllProduct} = require('../controllers/productViewController
 const {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest,orderPaymentConfirm, orderComplete}  = require('../controllers/productOrderController')
 
 const {bookingMoneyPayment, bookingPaymentInfo,sslCommerze,sslCommerzeSuccess,sslCommerzeFail,sslCommerzeCancel,sslCommerzeIpn} = require('../controllers/productPaymentControllers')
+const { ratingProduct } = require('../controllers/productQualityController')
 
 //(base/product) url
 router.use('/add',isLoggedIn)
@@ -37,6 +38,8 @@ router.get('/order/orderRequest',viewOrderRequest)
 router.post('/order/accept',acceptOrder)
 router.post('/order/paid',orderPaymentConfirm)
 router.post('/order/complete',orderComplete)
+//rating the order
+router.post('/order/rating',ratingProduct)
 
 router.route('/payment/booking').get(bookingPaymentInfo).post(bookingMoneyPayment)
 

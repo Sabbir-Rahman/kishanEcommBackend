@@ -21,6 +21,12 @@ const isNumber = {
     
 }
 
+const isNumberDeafultZero = {
+    type: Number,
+    default: 0
+    
+}
+
 const requiredNumber = {
     type: Number,
     required: true
@@ -50,6 +56,7 @@ const productOrderRequestSchema = mongoose.Schema({
     buyingMoney: requiredNumber,
     bookingMoney: requiredNumber,
     status : requiredString,
+    rating : isNumberDeafultZero,
     timestamp: {
         type: Date,
         default: new Date(),
