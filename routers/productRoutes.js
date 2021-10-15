@@ -15,7 +15,7 @@ const {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest,orderPaym
 const {bookingMoneyPayment, bookingPaymentInfo,sslCommerze,sslCommerzeSuccess,sslCommerzeFail,sslCommerzeCancel,sslCommerzeIpn} = require('../controllers/productPaymentControllers')
 const { ratingProduct } = require('../controllers/productQualityController')
 
-const { commentProduct } = require('../controllers/productCommentController')
+const { commentProduct,viewCommentsProduct } = require('../controllers/productCommentController')
 
 //(base/product) url
 router.use('/add',isLoggedIn)
@@ -37,6 +37,7 @@ router.get('/view',viewAllProduct)
 
 //product comment
 router.post('/comment',commentProduct)
+router.get('/comment',viewCommentsProduct)
 
 router.post('/order',orderProduct)
 router.route('/order/buyRequest').get(viewBuyProductRequest).post(acceptOrder)
