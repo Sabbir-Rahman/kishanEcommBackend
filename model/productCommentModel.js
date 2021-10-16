@@ -9,6 +9,7 @@ const requiredUniqueString = {
 const replyComment = {
     'id': Number,
     'userId': String,
+    'userName': String,
     'comments': String,
     'isVisible': Boolean,
     timestamp: {
@@ -19,6 +20,7 @@ const replyComment = {
 
 const comment = {
     'userId': String,
+    'userName':String,
     'comments': String,
     'isVisible': Boolean,
     'replyComment': {
