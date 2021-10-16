@@ -175,7 +175,8 @@ const productVerify = async (req, res) => {
 const productViewAdmin = async (req, res) => {
     const sortByTimestampDesc = {'_id': -1}
     const products = await product.find({
-        "isVerified": false
+        "isVerified": false,
+        "reVerificationMessage":'none'
     }).sort(sortByTimestampDesc)
 
     res.json({ 'message': 'View Product by admin Succesfull', 'data': products })
