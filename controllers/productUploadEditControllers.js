@@ -201,7 +201,7 @@ const productVerifyCancel = async (req,res) => {
     const newNotificationSeller = {
         "user_id": product.seller_id,
         "user_role": "customer",
-        "message": `Your product id:${productId} need to reviewed for ${message}`,
+        "message": `আপনার পণ্য- আইডি:${productId} নিম্নোক্ত কারণে রিভিউ করা প্রয়োজন: ${message}`,
         "type": "product_verification",
         "timestamp": new Date()
     }
