@@ -107,9 +107,9 @@ const orderProduct = async(req,res) => {
         "status" : "pending",
     }
 
-    sellerNotificationMessage = `Your product id:${productId} name:${product.name} has order for quantity:${quantity} ${product.unitName}. Only accept if you agree to this order and you have product availabilty otherwise reject it and update your productinfo`
+    sellerNotificationMessage = `আপনার পণ্য- আইডি:${productId} নাম:${product.name} অর্ডার করা হয়েছে। পরিমাণ:${quantity} ${product.unitName}.`
 
-    buyerNotificationMessage = `Your order for product id:${productId} is placed please wait for seller acceptance`
+    buyerNotificationMessage = `আপনার অর্ডার- আইডি:${productId} নাম:${product.name} স্থাপন করা হয়েছে। বিক্রেতার সম্মতির জন্য অপেক্ষা করুন।`
 
     const newNotificationSeller = {
         "user_id": product.seller_id,
@@ -202,9 +202,8 @@ const acceptOrder = async(req,res)=>{
         }
     )    
 
-    sellerNotificationMessage = `Your accept request for product id:${requestBuy.product_id} name:${requestBuy.productName} for seller id:${requestBuy.seller_id}.Prev product availability:${product.available} ${requestBuy.buyingQuantityUnit} present availability:${productUpdate.available} ${requestBuy.buyingQuantityUnit}`
-
-    buyerNotificationMessage = `Your order for product id:${requestOrder.product_id} name:${requestOrder.productName} is accepted by sellerId:${requestOrder.seller_id} please pay the booking money:${requestOrder.bookingMoney}`
+    sellerNotificationMessage = `পণ্য আইডি:${requestBuy.product_id} নাম:${requestBuy.productName} বিক্রয়ের জন্য সম্মতি দেয়া হয়েছে।`
+    buyerNotificationMessage = `আপনার অর্ডার- আইডি:${requestOrder.product_id} নাম:${requestOrder.productName} বিক্রয় করতে বিক্রেতা সম্মত হয়েছেন। অনুগ্রহ করে বুকিং মানি পরিশোধ করুন। বুকিং মানির পরিমাণ:${requestOrder.bookingMoney}`
 
     const newNotificationSeller = {
         "user_id": req.user.id,
@@ -283,9 +282,9 @@ const orderPaymentConfirm = async(req,res)=>{
     }
 
 
-    sellerNotificationMessage = `You confirm payment for product id:${requestBuy.product_id} name:${requestBuy.productName}`
+    sellerNotificationMessage = `পন্য- আইডি:${requestBuy.product_id} নাম:${requestBuy.productName} পেমেন্ট বুঝে পেয়েছেন।`
 
-    buyerNotificationMessage = `Your payment for product id:${requestOrder.product_id} name:${requestOrder.productName} is confirmed by sellerId:${requestOrder.seller_id} please change the status to done when you receive the product`
+    buyerNotificationMessage = `পণ্য- আইডি:${requestOrder.product_id} নাম:${requestOrder.productName} এর জন্য পেমেন্ট বিক্রেতা বুঝে পেয়েছেন। অনুগ্রহ করে পণ্য বুঝে পেয়ে অর্ডার স্ট্যাটাস বদল করুন।`
 
     const newNotificationSeller = {
         "user_id": req.user.id,
@@ -348,9 +347,9 @@ const orderComplete = async(req,res)=>{
     }
 
 
-    sellerNotificationMessage = `Order completement for your product id:${requestBuy.product_id} name:${requestBuy.productName} by buyer:${requestBuy.buyer_id}. Thanks for being with kishan`
+    sellerNotificationMessage = `আপনার অর্ডার- আইডি::${requestBuy.product_id} নাম:${requestBuy.productName} সম্পন্ন হয়েছে। কিষাণের সাথে থাকার জন্য ধন্যবাদ।`
 
-    buyerNotificationMessage = `You confirm order completement for product id:${requestOrder.product_id} name:${requestOrder.productName} sellerId:${requestOrder.seller_id}.You can give rating to this product now. Thanks for being with kishan`
+    buyerNotificationMessage = `আপনার অর্ডার- আইডি::${requestBuy.product_id} নাম:${requestBuy.productName} সম্পন্ন হয়েছে। আপনি এখন পণ্যের রেটিং দিতে পারবেন। কিষাণের সাথে থাকার জন্য ধন্যবাদ।`
 
     const newNotificationSeller = {
         "user_id": req.user.id,
