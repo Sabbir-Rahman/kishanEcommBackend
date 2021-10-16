@@ -30,6 +30,7 @@ const commentProduct  = async (req,res) => {
         
         const singleComment = {
             'userId': req.user.id,
+            'userName': req.user.fullname,
             'comments': comment,
             'isVisible': true,
             'replyComment': []
@@ -52,6 +53,7 @@ const commentProduct  = async (req,res) => {
     }else {
         const singleComment = {
             'userId': req.user.id,
+            'userName': req.user.fullname,
             'comments': comment,
             'isVisible': true,
             'replyComment': []
