@@ -313,7 +313,7 @@ const viewOrderRequest = async(req,res)=> {
 
     req.query.buyer_id = req.user.id
 
-    //pass req.query for filter as req.query want
+    //pass req.query for filter as req.query as want
     const sortByTimestampDesc = {'_id': -1}
     const request = await productOrderRequest.find(
         req.query
