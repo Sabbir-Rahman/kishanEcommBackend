@@ -27,6 +27,7 @@ const addProducts = async (req, res) => {
         "image2":image2,
         "image3":image3,
         "video":video,
+        "reVerificationMessage":'none',
         "unitName": unitname,
         "unitPrize": unitPrize,
         "bookingPercentage": bookingPercentage,
@@ -143,6 +144,7 @@ const productVerify = async (req, res) => {
         },
         {
             isVerified:isVerified,
+            reVerificationMessage:'none',
         },
         {
             new: true
@@ -180,5 +182,38 @@ const productViewAdmin = async (req, res) => {
 
 }
 
+const productVerifyCancel = async (req,res) => {
 
-module.exports = { test, addProducts, editProducts, productVerify, productViewAdmin }
+    const {productId,message} = req.body
+    
+    const product = await productSchema.findOneAndUpdate(
+        {
+            _id: productId,
+        },
+        {
+            reVerificationMessage:message,
+        },
+        {
+            new: true
+        }
+    )
+
+    const newNotificationSeller = {
+        "user_id": product.seller_id,
+        "user_role": "customer",
+        "message": `Your product id:${productId} need to reviewed for ${message}`,
+        "type": "product_verification",
+        "timestamp": new Date()
+    }
+
+  
+    const notificationResultSeller = await new notificationSchema(newNotificationSeller).save()
+
+    res.json({ 'message': 'Verify Product Cance Succesfull','data':product,'notificationSeller': notificationResultSeller})
+
+
+
+}
+
+
+module.exports = { test, addProducts, editProducts, productVerify, productViewAdmin, productVerifyCancel }

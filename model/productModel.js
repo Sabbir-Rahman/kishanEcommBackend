@@ -54,6 +54,14 @@ const requiredBoolean = {
     required: true
 }
 
+const reVerificationNeed = {
+    status: {
+        type: Boolean,
+        default: false
+    },
+    message: String 
+}
+
 
 
 
@@ -68,6 +76,7 @@ const productSchema = mongoose.Schema({
     image2:isString,
     image3:isString,
     video: isString,
+    reVerificationMessage: String ,
     unitName: requiredString,
     unitPrize: requiredNumber,
     bookingPercentage: isNumber,
