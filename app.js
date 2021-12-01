@@ -33,7 +33,7 @@ app.use('/role',roleRoutes)
 app.use('/product',productUploadRoutes)
 app.use('/notification',notificationRoutes)
 
-
+//comment
 const connectDB = async () => {
   try {
       await mongoose.connect(CONNECTION_URL, {
