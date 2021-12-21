@@ -23,17 +23,29 @@ const orderProduct = async(req,res) => {
 
     const product =  await productSchema.findOne({ "_id":productId });
     
-    const existingProductRequest = await productBuyRequest.findOne({
+    const existingPendingProductRequest = await productBuyRequest.findOne({
         "product_id": productId,
         "buyer_id": req.user.id,
         "status":"pending"
     })
 
+    const existingAcceptedProductRequest = await productBuyRequest.findOne({
+        "product_id": productId,
+        "buyer_id": req.user.id,
+        "status":"accepted"
+    })
+
+    // const existingBookedProductRequest = await productBuyRequest.findOne({
+    //     "product_id": productId,
+    //     "buyer_id": req.user.id,
+    //     "status":"booked"
+    // })
+
    
     //bypass logic for admin
-    if(existingProductRequest ){
+    if(existingPendingProductRequest || existingAcceptedProductRequest ){
         console.log('hit')
-        return res.status(400).json({'message':"You have a pending order for the same product or product not exist"})
+        return res.status(400).json({'message':"You have a not paid order for the same product please complete it first"})
     }
 
     const user = await User.findOne({ "_id":req.user.id })
@@ -95,9 +107,9 @@ const orderProduct = async(req,res) => {
         "status" : "pending",
     }
 
-    sellerNotificationMessage = `Your product id:${productId} name:${product.name} has order for quantity:${quantity} ${product.unitName}. Only accept if you agree to this order and you have product availabilty otherwise reject it and update your productinfo`
+    sellerNotificationMessage = `আপনার পণ্য- আইডি:${productId} নাম:${product.name} অর্ডার করা হয়েছে। পরিমাণ:${quantity} ${product.unitName}.`
 
-    buyerNotificationMessage = `Your order for product id:${productId} is placed please wait for seller acceptance`
+    buyerNotificationMessage = `আপনার অর্ডার- আইডি:${productId} নাম:${product.name} স্থাপন করা হয়েছে। বিক্রেতার সম্মতির জন্য অপেক্ষা করুন।`
 
     const newNotificationSeller = {
         "user_id": product.seller_id,
@@ -156,7 +168,7 @@ const acceptOrder = async(req,res)=>{
         }
     )
 
-const requestOrder = await productOrderRequestSchema.findOneAndUpdate(
+    const requestOrder = await productOrderRequestSchema.findOneAndUpdate(
         {
             product_id: productId,
             seller_id:req.user.id,
@@ -190,9 +202,8 @@ const requestOrder = await productOrderRequestSchema.findOneAndUpdate(
         }
     )    
 
-    sellerNotificationMessage = `Your accept request for product id:${requestBuy.product_id} name:${requestBuy.productName} for seller id:${requestBuy.seller_id}.Prev product availability:${product.available} ${requestBuy.buyingQuantityUnit} present availability:${productUpdate.available} ${requestBuy.buyingQuantityUnit}`
-
-    buyerNotificationMessage = `Your order for product id:${requestOrder.product_id} name:${requestOrder.productName} is accepted by sellerId:${requestOrder.seller_id} please pay the booking money:${requestOrder.bookingMoney}`
+    sellerNotificationMessage = `পণ্য আইডি:${requestBuy.product_id} নাম:${requestBuy.productName} বিক্রয়ের জন্য সম্মতি দেয়া হয়েছে।`
+    buyerNotificationMessage = `আপনার অর্ডার- আইডি:${requestOrder.product_id} নাম:${requestOrder.productName} বিক্রয় করতে বিক্রেতা সম্মত হয়েছেন। অনুগ্রহ করে বুকিং মানি পরিশোধ করুন। বুকিং মানির পরিমাণ:${requestOrder.bookingMoney}`
 
     const newNotificationSeller = {
         "user_id": req.user.id,
@@ -218,11 +229,91 @@ const requestOrder = await productOrderRequestSchema.findOneAndUpdate(
 }
 
 
+const cancelOrder = async(req,res)=>{
+
+    const { productId,message } = req.body
+
+    
+    const requestBuy = await productBuyRequestSchema.findOneAndUpdate(
+        {
+            product_id: productId,
+            seller_id:req.user.id,
+            status: "pending"
+        },
+        {
+            status: "cancel"
+        },
+        {
+            new: true
+        }
+    )
+
+    const requestOrder = await productOrderRequestSchema.findOneAndUpdate(
+        {
+            product_id: productId,
+            seller_id:req.user.id,
+            status: "pending"
+        },
+        {
+            status: "cancel"
+        },
+        {
+            new: true
+        }
+    )
+    if(!requestOrder||!requestBuy){
+        return res.status(400).json({ 'message': 'Product not find for in your buy request'})
+    }
+
+    const product = await productSchema.findById(productId)
+
+
+    //auto adjust the quantity
+    const productUpdate = await productSchema.findOneAndUpdate(
+        {
+            _id: productId,
+        
+        },
+        {
+            available: product.available+requestBuy.buyingQuantity
+        },
+        {
+            new: true
+        }
+    )    
+
+    sellerNotificationMessage = `পণ্য আইডি:${requestBuy.product_id} নাম:${requestBuy.productName} বিক্রয়ের জন্য সম্মতি den ni`
+    buyerNotificationMessage = `আপনার অর্ডার- আইডি:${requestOrder.product_id} নাম:${requestOrder.productName} বিক্রয় করতে বিক্রেতা সম্মত hon ni karon ${message}`
+
+    const newNotificationSeller = {
+        "user_id": req.user.id,
+        "message": sellerNotificationMessage,
+        "type": "product_buying_request",
+        "timestamp": new Date()
+    }
+
+    const newNotificationBuyer = {
+        "user_id": req.user.id,
+        "message": buyerNotificationMessage,
+        "type": "product_order_request",
+        "timestamp": new Date()
+    }
+
+   
+    
+    const notificationSeller = await new notificationSchema(newNotificationSeller).save()
+    const notificationBuyer = await new notificationSchema(newNotificationBuyer).save()
+
+    
+    return res.status(200).json({ 'message': 'Product order cancel succesfully','dataBuyRequest':requestBuy,'dataOrderRequest':requestOrder,'sellerNotification':notificationSeller,'buyerNotificationMessage':notificationBuyer})
+}
+
+
 const viewOrderRequest = async(req,res)=> {
 
     req.query.buyer_id = req.user.id
 
-    //pass req.query for filter as req.query want
+    //pass req.query for filter as req.query as want
     const sortByTimestampDesc = {'_id': -1}
     const request = await productOrderRequest.find(
         req.query
@@ -233,5 +324,137 @@ const viewOrderRequest = async(req,res)=> {
 }
 
 
+//change status to full payment by seller if buyer pay the full money
+const orderPaymentConfirm = async(req,res)=>{
 
-module.exports = {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest}
+    const { productId } = req.body
+
+    
+    const requestBuy = await productBuyRequestSchema.findOneAndUpdate(
+        {
+            product_id: productId,
+            seller_id:req.user.id,
+            status: "booked"
+        },
+        {
+            status: "paid"
+        },
+        {
+            new: true
+        }
+    )
+
+    const requestOrder = await productOrderRequestSchema.findOneAndUpdate(
+        {
+            product_id: productId,
+            seller_id:req.user.id,
+            status: "booked"
+        },
+        {
+            status: "paid"
+        },
+        {
+            new: true
+        }
+    )
+    if(!requestOrder||!requestBuy){
+        return res.status(400).json({ 'message': 'Product not find for in your buy request'})
+    }
+
+
+    sellerNotificationMessage = `পন্য- আইডি:${requestBuy.product_id} নাম:${requestBuy.productName} পেমেন্ট বুঝে পেয়েছেন।`
+
+    buyerNotificationMessage = `পণ্য- আইডি:${requestOrder.product_id} নাম:${requestOrder.productName} এর জন্য পেমেন্ট বিক্রেতা বুঝে পেয়েছেন। অনুগ্রহ করে পণ্য বুঝে পেয়ে অর্ডার স্ট্যাটাস বদল করুন।`
+
+    const newNotificationSeller = {
+        "user_id": req.user.id,
+        "message": sellerNotificationMessage,
+        "type": "product_buying_request",
+        "timestamp": new Date()
+    }
+
+    const newNotificationBuyer = {
+        "user_id": req.user.id,
+        "message": buyerNotificationMessage,
+        "type": "product_order_request",
+        "timestamp": new Date()
+    }
+
+   
+    
+    const notificationSeller = await new notificationSchema(newNotificationSeller).save()
+    const notificationBuyer = await new notificationSchema(newNotificationBuyer).save()
+
+    
+    return res.status(200).json({ 'message': 'Product order payment confirmed succesfully','dataBuyRequest':requestBuy,'dataOrderRequest':requestOrder,'sellerNotification':notificationSeller,'buyerNotificationMessage':notificationBuyer})
+}
+
+//change status to complete by buyer if seller already confirm the payment
+const orderComplete = async(req,res)=>{
+
+    const { productId } = req.body
+
+    
+    const requestBuy = await productBuyRequestSchema.findOneAndUpdate(
+        {
+            product_id: productId,
+            buyer_id:req.user.id,
+            status: "paid"
+        },
+        {
+            status: "complete"
+        },
+        {
+            new: true
+        }
+    )
+
+    const requestOrder = await productOrderRequestSchema.findOneAndUpdate(
+        {
+            product_id: productId,
+            buyer_id:req.user.id,
+            status: "paid"
+        },
+        {
+            status: "complete"
+        },
+        {
+            new: true
+        }
+    )
+    if(!requestOrder||!requestBuy){
+        return res.status(400).json({ 'message': 'Product not find for in your buy request'})
+    }
+
+
+    sellerNotificationMessage = `আপনার অর্ডার- আইডি::${requestBuy.product_id} নাম:${requestBuy.productName} সম্পন্ন হয়েছে। কিষাণের সাথে থাকার জন্য ধন্যবাদ।`
+
+    buyerNotificationMessage = `আপনার অর্ডার- আইডি::${requestBuy.product_id} নাম:${requestBuy.productName} সম্পন্ন হয়েছে। আপনি এখন পণ্যের রেটিং দিতে পারবেন। কিষাণের সাথে থাকার জন্য ধন্যবাদ।`
+
+    const newNotificationSeller = {
+        "user_id": req.user.id,
+        "message": sellerNotificationMessage,
+        "type": "product_buying_request",
+        "timestamp": new Date()
+    }
+
+    const newNotificationBuyer = {
+        "user_id": req.user.id,
+        "message": buyerNotificationMessage,
+        "type": "product_order_request",
+        "timestamp": new Date()
+    }
+
+   
+    
+    const notificationSeller = await new notificationSchema(newNotificationSeller).save()
+    const notificationBuyer = await new notificationSchema(newNotificationBuyer).save()
+
+    
+    return res.status(200).json({ 'message': 'Product order complete confirmed succesfully. Please give the rating','dataBuyRequest':requestBuy,'dataOrderRequest':requestOrder,'sellerNotification':notificationSeller,'buyerNotificationMessage':notificationBuyer})
+}
+
+
+
+
+module.exports = {orderProduct,viewBuyProductRequest,acceptOrder,viewOrderRequest,orderPaymentConfirm, orderComplete, cancelOrder}

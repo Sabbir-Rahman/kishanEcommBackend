@@ -1,7 +1,14 @@
 FROM node
-WORKDIR /app
-COPY package.json .
+
+WORKDIR /usr/src/app
+
+COPY ./package.json ./
+COPY ./package-lock.json ./
+
 RUN npm install
-COPY . ./
+
+
+COPY . .
 EXPOSE 5000
-CMD ["node", "app.js"]
+
+CMD ["npm", "start"]

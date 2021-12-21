@@ -31,6 +31,12 @@ const isNumberDefaultZero = {
     default:0
     
 }
+
+const maxOrder = {
+    type: Number,
+    default:999999
+    
+}
 const requiredNumber = {
     type: Number,
     required: true
@@ -48,6 +54,14 @@ const requiredBoolean = {
     required: true
 }
 
+const reVerificationNeed = {
+    status: {
+        type: Boolean,
+        default: false
+    },
+    message: String 
+}
+
 
 
 
@@ -62,11 +76,13 @@ const productSchema = mongoose.Schema({
     image2:isString,
     image3:isString,
     video: isString,
+    reVerificationMessage: String ,
     unitName: requiredString,
     unitPrize: requiredNumber,
     bookingPercentage: isNumber,
     available: requiredNumber,
     minOrder: isNumberDefaultZero,
+    maxOrder: maxOrder,
     rating: isNumber,
     ratingCount: isNumberDefaultZero,
     availableDate: requiredDate,

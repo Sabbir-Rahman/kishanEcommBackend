@@ -53,6 +53,7 @@ const productBuyRequestSchema = mongoose.Schema({
     buyingQuantity: requiredNumber,
     buyingMoney: requiredNumber,
     bookingMoney: requiredNumber,
+    moneyPaid: isNumber,
     status : requiredString,
     timestamp: {
         type: Date,

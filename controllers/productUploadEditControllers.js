@@ -27,6 +27,7 @@ const addProducts = async (req, res) => {
         "image2":image2,
         "image3":image3,
         "video":video,
+        "reVerificationMessage":'none',
         "unitName": unitname,
         "unitPrize": unitPrize,
         "bookingPercentage": bookingPercentage,
@@ -143,6 +144,7 @@ const productVerify = async (req, res) => {
         },
         {
             isVerified:isVerified,
+            reVerificationMessage:'none',
         },
         {
             new: true
@@ -173,12 +175,46 @@ const productVerify = async (req, res) => {
 const productViewAdmin = async (req, res) => {
     const sortByTimestampDesc = {'_id': -1}
     const products = await product.find({
-        "isVerified": false
+        "isVerified": false,
+        "reVerificationMessage":'none'
     }).sort(sortByTimestampDesc)
 
     res.json({ 'message': 'View Product by admin Succesfull', 'data': products })
 
 }
 
+const productVerifyCancel = async (req,res) => {
 
-module.exports = { test, addProducts, editProducts, productVerify, productViewAdmin }
+    const {productId,message} = req.body
+    
+    const product = await productSchema.findOneAndUpdate(
+        {
+            _id: productId,
+        },
+        {
+            reVerificationMessage:message,
+        },
+        {
+            new: true
+        }
+    )
+
+    const newNotificationSeller = {
+        "user_id": product.seller_id,
+        "user_role": "customer",
+        "message": `আপনার পণ্য- আইডি:${productId} নিম্নোক্ত কারণে রিভিউ করা প্রয়োজন: ${message}`,
+        "type": "product_verification",
+        "timestamp": new Date()
+    }
+
+  
+    const notificationResultSeller = await new notificationSchema(newNotificationSeller).save()
+
+    res.json({ 'message': 'Verify Product Cance Succesfull','data':product,'notificationSeller': notificationResultSeller})
+
+
+
+}
+
+
+module.exports = { test, addProducts, editProducts, productVerify, productViewAdmin, productVerifyCancel }

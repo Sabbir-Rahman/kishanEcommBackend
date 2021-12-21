@@ -12,7 +12,7 @@ For Functional we will use 4 phase of testing
 For automation test primary plan to use 
     mocha -> Unit testing & integration of rest api
     supertest -> As rest api testing framework
-    mocha--coverage(istanbul)-> For see testing civerage
+    mocha--coverage(istanbul)-> For see testing coverage
     postman -> For sanity testing
     chai -> For assertion framework
     
